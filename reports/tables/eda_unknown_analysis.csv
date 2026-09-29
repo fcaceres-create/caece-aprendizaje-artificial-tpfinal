@@ -1,0 +1,9 @@
+variable,is_unknown,n,conversion_rate
+job,False,40440,0.1172
+job,True,250,0.108
+education,False,39020,0.1162
+education,True,1670,0.1395
+contact,False,28994,0.1483
+contact,True,11696,0.0401
+poutcome,False,7436,0.2312
+poutcome,True,33254,0.0917

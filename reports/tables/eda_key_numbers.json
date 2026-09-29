@@ -1,0 +1,110 @@
+{
+  "target": {
+    "n_train": 40690,
+    "n_pos": 4768,
+    "pos_rate": 0.11717866797739002
+  },
+  "pdays": {
+    "pct_pdays_minus1": 81.71295158515606,
+    "pdays_minus1_and_previous0": 33249,
+    "pdays_minus1_total": 33249,
+    "pdays_minus1_poutcome_unknown": 33249,
+    "contacted_before_poutcome_unknown": 5,
+    "conv_never_contacted": 0.09164185389034257,
+    "conv_contacted_before": 0.231286117457331,
+    "conv_poutcome_success": 0.6476121562952243
+  },
+  "month": {
+    "spearman_volume_vs_rate": [
+      -0.8391608391608393,
+      0.0006428259886278203
+    ],
+    "top_rate_months": {
+      "mar": {
+        "n": 428,
+        "conversion_rate": 0.5304
+      },
+      "sep": {
+        "n": 527,
+        "conversion_rate": 0.4782
+      },
+      "dec": {
+        "n": 194,
+        "conversion_rate": 0.4691
+      },
+      "oct": {
+        "n": 658,
+        "conversion_rate": 0.4347
+      }
+    },
+    "may_share_pct": 30.39567461292701,
+    "may_rate": 0.06727037516170763
+  },
+  "outliers": {
+    "balance_p99": 13054.0,
+    "balance_max": 102127,
+    "balance_min": -8019,
+    "balance_pct_negative": 8.355861391005162,
+    "balance_pct_zero": 7.758663062177439,
+    "balance_pct_outliers_iqr": 10.361268124846399,
+    "balance_skew": 8.549625159203488,
+    "campaign_p99": 17.0,
+    "campaign_max": 63,
+    "campaign_pct_above_p99": 0.8503317768493488,
+    "conv_campaign_1": 0.1468058191018343,
+    "conv_campaign_ge_5": 0.06369775506479285
+  },
+  "duration": {
+    "duration_zero_n": 3,
+    "duration_zero_conv": 0.0,
+    "duration_median_no": 163.5,
+    "duration_median_yes": 423.5,
+    "duration_auc_alone": 0.8068397734847949,
+    "conv_duration_top_decile": 0.45687530803351406,
+    "conv_duration_bottom_decile": 0.00191433357262503,
+    "pct_short_calls_lt_60s": 10.270336692061932,
+    "conv_short_calls_lt_60s": 0.00191433357262503
+  },
+  "feature_ranking_top": [
+    {
+      "variable": "duration",
+      "mutual_info": 0.072,
+      "cramers_v": 0.3976
+    },
+    {
+      "variable": "poutcome",
+      "mutual_info": 0.0298,
+      "cramers_v": 0.3136
+    },
+    {
+      "variable": "pdays",
+      "mutual_info": 0.0255,
+      "cramers_v": 0.035
+    },
+    {
+      "variable": "month",
+      "mutual_info": 0.0249,
+      "cramers_v": 0.2631
+    },
+    {
+      "variable": "balance",
+      "mutual_info": 0.0226,
+      "cramers_v": 0.1014
+    },
+    {
+      "variable": "previous",
+      "mutual_info": 0.0145,
+      "cramers_v": 0.1238
+    },
+    {
+      "variable": "contact",
+      "mutual_info": 0.0139,
+      "cramers_v": 0.1526
+    },
+    {
+      "variable": "age",
+      "mutual_info": 0.0127,
+      "cramers_v": 0.1205
+    }
+  ]
+}
