@@ -61,8 +61,10 @@ def stage_notebooks():
 def stage_report():
     from .diagram import render_diagrams
     from .export_report import build_report
+    from .slides import build_slides_html
     render_diagrams()
     build_report()
+    print("  presentación:", build_slides_html())
 
 
 def main(argv=None):

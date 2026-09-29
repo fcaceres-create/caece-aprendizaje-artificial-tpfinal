@@ -4,9 +4,9 @@
 
 <!-- center -->Maestría en Gestión y Desarrollo de Inteligencia Artificial · Universidad CAECE
 
-<!-- center -->Docente: [COMPLETAR]
+<!-- center -->Docentes: Juan Azcurra · Paul Pablo Hernán
 
-<!-- center -->Integrantes: [COMPLETAR NOMBRE 1] · [COMPLETAR NOMBRE 2] · [COMPLETAR NOMBRE 3]
+<!-- center -->Autor: Fernando Caceres
 
 <!-- center -->Fecha: 28/09/2026
 

@@ -2,7 +2,7 @@
 
 Cada transformación que se aplica a los datos queda registrada en
 ``reports/tables/data_preparation_steps.csv`` (filas antes/después y motivo), para
-que el grupo pueda explicar exactamente qué se hizo con el dataset.
+que se pueda explicar exactamente qué se hizo con el dataset.
 """
 
 from __future__ import annotations

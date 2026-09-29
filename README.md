@@ -1,6 +1,6 @@
 # TP Final — Captación de clientes
 
-**Aprendizaje Artificial · Maestría en Gestión y Desarrollo de IA · Universidad CAECE**
+**Aprendizaje Artificial · Maestría en Gestión y Desarrollo de Inteligencia Artificial · Universidad CAECE**
 
 El proyecto construye un modelo que ordena a los clientes potenciales de una campaña de marketing
 telefónico según su probabilidad de convertirse en clientes del banco. Con ese orden se decide a
@@ -9,7 +9,7 @@ quién llamar cuando hay un presupuesto limitado.
 El trabajo sigue CRISP-DM de punta a punta y agrega una API (FastAPI) y una interfaz web
 (Streamlit) que consumen el modelo.
 
-**Integrantes:** [COMPLETAR] · **Docente:** [COMPLETAR]
+**Autor:** Fernando Caceres · **Docentes:** Juan Azcurra y Paul Pablo Hernán
 
 ## Resultados clave
 
@@ -23,6 +23,9 @@ El trabajo sigue CRISP-DM de punta a punta y agrega una API (FastAPI) y una inte
 | Umbral operativo (máx. beneficio, V/C = 20) | 0,050 | contacta al 61 %, captura el 86,6 % |
 | Baseline: regresión logística (PR-AUC) | 0,412 | 0,349 |
 | Leakage: el mismo modelo con `duration` (ROC-AUC) | 0,937 | 0,933 (no utilizable) |
+
+- **Presentación:** [presentacion/index.html](presentacion/index.html). Es un único archivo HTML, funciona sin
+  conexión y se navega con ← →; con `N` se ven las notas del orador y con `F` se pasa a pantalla completa.
 
 Todos los números salen de `reports/tables/`. El informe completo está en
 [reports/informe_final.md](reports/informe_final.md), también en `.docx` y `.pdf`.
