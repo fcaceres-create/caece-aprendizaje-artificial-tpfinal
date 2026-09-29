@@ -1,0 +1,15 @@
+# Dependencias mínimas para servir el modelo (API + UI). Mismas versiones que requirements.txt.
+pandas==3.0.6
+numpy==2.5.3
+scipy
+scikit-learn==1.9.1
+imbalanced-learn==0.14.2
+lightgbm==4.7.0
+xgboost==3.4.1
+joblib==1.6.0
+pydantic==2.13.5
+fastapi==0.141.1
+uvicorn==0.54.0
+python-multipart==0.0.32
+streamlit==1.64.0
+requests==2.34.2

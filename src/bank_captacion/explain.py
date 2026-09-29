@@ -23,57 +23,14 @@ from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
 from . import config as cfg
 from .data import load_clean, split_xy
 from .features import CATEGORICAL, build_pipeline
+from .inference import FEATURE_LABELS, _fmt_value, transform_for_model
 
 sns.set_theme(style="whitegrid")
-
-FEATURE_LABELS = {
-    "age": "Edad", "balance_log": "Saldo (log)", "balance_negative": "Saldo negativo",
-    "balance_zero": "Saldo cero", "campaign_w": "Contactos en campaña", "pdays_clean": "Días desde contacto previo",
-    "previously_contacted": "Contactado antes", "previous_w": "Contactos previos", "day_sin": "Día (seno)",
-    "day_cos": "Día (coseno)", "contact_known": "Canal conocido", "prev_campaign_success": "Éxito previo",
-    "n_credit_products": "Nº de préstamos", "job": "Ocupación", "marital": "Estado civil",
-    "education": "Educación", "default": "Impagos", "housing": "Hipoteca", "loan": "Préstamo personal",
-    "contact": "Tipo de contacto", "month": "Mes", "poutcome": "Resultado previo", "age_group": "Grupo de edad",
-    "season": "Estación", "duration": "Duración",
-}
 
 
 def _savefig(fig, name):
     fig.savefig(cfg.FIGURES_DIR / name, dpi=130, bbox_inches="tight")
     plt.close(fig)
-
-
-def transform_for_model(pipe, X: pd.DataFrame) -> pd.DataFrame:
-    """Aplica todos los pasos del pipeline salvo el clasificador."""
-    Z = X
-    for _, step in pipe.steps[:-1]:
-        if hasattr(step, "fit_resample"):
-            continue
-        Z = step.transform(Z)
-    return Z
-
-
-def top_contributions(pipe, X: pd.DataFrame, k: int = 3) -> list[list[dict]]:
-    """Top-k contribuciones SHAP (TreeSHAP nativo de LightGBM) por fila. Se usa en la API."""
-    Z = transform_for_model(pipe, X)
-    contrib = pipe[-1].predict(Z, pred_contrib=True)  # (n, n_features + 1); última columna = base
-    names = list(Z.columns)
-    out = []
-    for i in range(len(Z)):
-        vals = contrib[i, :-1]
-        idx = np.argsort(-np.abs(vals))[:k]
-        out.append([{"feature": names[j], "label": FEATURE_LABELS.get(names[j], names[j]),
-                     "value": _fmt_value(Z.iloc[i, j]), "shap": round(float(vals[j]), 4),
-                     "effect": "aumenta" if vals[j] > 0 else "reduce"} for j in idx])
-    return out
-
-
-def _fmt_value(v):
-    if isinstance(v, (float, np.floating)):
-        return None if np.isnan(v) else round(float(v), 3)
-    if isinstance(v, (int, np.integer)):
-        return int(v)
-    return str(v)
 
 
 def shap_analysis(pipe, X: pd.DataFrame, y: pd.Series, threshold: float) -> dict:
