@@ -1,0 +1,8 @@
+{
+  "train_raw_rows": 45211,
+  "train_clean_rows": 40690,
+  "test_rows": 4521,
+  "overlap_rows_removed": 4521,
+  "train_sha256": "d1513ec63b385506f7cfce9f2c5caa9fe99e7ba4e8c3fa264b3aaf0f849ed32d",
+  "test_sha256": "dc8d576e9bda0f41ee891251bd84bab9a39ce576cba715aac08adc2374a01fde"
+}

@@ -1,0 +1,9 @@
+order,step,dataset,rows_before,rows_after,rows_removed,reason
+1,load,train,45211,45211,0,banca_train.csv leído con sep=';' y encoding ASCII; esquema validado (17 columnas).
+2,load,test,4521,4521,0,banca_test.csv leído con sep=';' y encoding ASCII; esquema validado (17 columnas).
+3,check_exact_duplicates,train,45211,45211,0,Duplicados exactos dentro de train: 0. No se elimina nada.
+4,check_exact_duplicates,test,4521,4521,0,Duplicados exactos dentro de test: 0. No se elimina nada.
+5,check_nulls,train+test,49732,49732,0,"Nulos: train=0, test=0. Los faltantes vienen codificados como la categoría 'unknown' y pdays=-1."
+6,remove_train_test_overlap,train,45211,40690,4521,4521 de 4521 filas de test (100.0 %) aparecen idénticas en train (bank.csv es una muestra de bank-full). Se quitan de train para que el hold-out sea independiente.
+7,save_processed,train,40690,40690,0,Guardado en data/processed/train_clean.csv (sin transformar variables).
+8,save_processed,test,4521,4521,0,Guardado en data/processed/test_clean.csv (idéntico al original).

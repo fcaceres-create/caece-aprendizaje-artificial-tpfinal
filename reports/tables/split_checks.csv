@@ -1,0 +1,6 @@
+check,statistic,p_value,detail
+posiciones_test_en_train_vs_uniforme (KS),0.0136,0.3715,"posición media relativa = 0.495 (0,5 si es uniforme)"
+distribucion_month_train_vs_test (chi2),10.707,0.4681,12 niveles
+distribucion_contact_train_vs_test (chi2),1.227,0.5414,3 niveles
+distribucion_poutcome_train_vs_test (chi2),4.637,0.2004,4 niveles
+distribucion_y_train_vs_test (chi2),0.13,0.7186,2 niveles

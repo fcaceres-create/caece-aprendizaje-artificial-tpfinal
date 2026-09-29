@@ -1,0 +1,25 @@
+# Versiones fijadas y verificadas en Windows 11 con Python 3.14.5 (compatibles con Python >= 3.11).
+pandas==3.0.6
+numpy==2.5.3
+scikit-learn==1.9.1
+imbalanced-learn==0.14.2
+lightgbm==4.7.0
+xgboost==3.4.1
+shap==0.52.0
+optuna==5.0.0
+matplotlib==3.11.2
+seaborn==0.13.2
+joblib==1.6.0
+pydantic==2.13.5
+fastapi==0.141.1
+uvicorn==0.54.0
+python-multipart==0.0.32
+streamlit==1.64.0
+requests==2.34.2
+httpx==0.28.1
+pytest==9.1.1
+jupyter==1.1.1
+ipykernel==7.3.0
+nbconvert==7.17.1
+papermill==2.7.0
+python-docx==1.2.0
