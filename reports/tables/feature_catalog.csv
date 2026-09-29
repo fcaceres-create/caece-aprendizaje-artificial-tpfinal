@@ -1,0 +1,17 @@
+in_pre_contact_model,feature,source,transformation,justification,learned_in_fit
+True,age,age,Sin cambios,Edad numérica.,False
+True,age_group,age,"Bins <25, 25-34, 35-44, 45-54, 55-64, 65+",Efecto no lineal: conversión alta en jóvenes y mayores de 60.,False
+True,balance_log,balance,sign(x)·log(1+|x|),"Saldo muy asimétrico (asimetría 8,5) con negativos: reduce la influencia de extremos sin eliminarlos.",False
+True,balance_negative,balance,1 si balance < 0,"8,4 % de clientes en descubierto.",False
+True,balance_zero,balance,1 si balance = 0,"7,8 % de clientes sin saldo.",False
+True,campaign_w,campaign,Winsorizado al p99 del fold de entrenamiento,Cola larga (máx. 63); el p99 se aprende en fit para no usar información del fold de validación.,True
+True,previous_w,previous,Winsorizado al p99 del fold de entrenamiento,Cola larga; mismo criterio que campaign.,True
+True,pdays_clean,pdays,NaN cuando pdays = -1,El -1 no es un número de días; el faltante se imputa luego según la familia de modelo.,False
+True,previously_contacted,pdays,1 si pdays != -1,"Conserva explícitamente la información 'nunca contactado' (23,1 % vs 9,2 % de conversión).",False
+True,day_sin / day_cos,day,sin/cos(2π·day/31),El día del mes es cíclico: el 31 está cerca del 1.,False
+True,contact_known,contact,1 si contact != unknown,"contact=unknown corresponde a un período sin registro del canal (4,0 % de conversión).",False
+True,poutcome_success,poutcome,1 si poutcome = success,"Señal más fuerte disponible antes de llamar (64,8 % de conversión).",False
+True,season,month,Estación del año (hemisferio norte),Agrupa meses de bajo volumen para estabilizar su estimación.,False
+True,n_credit_products,"housing, loan, default",Suma de yes en housing + loan + default,Tener préstamos reduce la conversión; resume la carga crediticia.,False
+True,"job, marital, education, default, housing, loan, contact, month, poutcome",originales,Categóricas sin cambios ('unknown' se mantiene como categoría),unknown no es un faltante aleatorio (ver EDA).,False
+False,duration,duration,Solo en el conjunto with_duration,Leakage: se conoce después de la llamada. Excluida del modelo entregable.,False

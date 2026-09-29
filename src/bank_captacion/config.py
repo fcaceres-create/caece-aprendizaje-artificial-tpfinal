@@ -6,7 +6,15 @@ Windows y en macOS.
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+
+# La consola de Windows usa cp1252 por defecto: se fuerza UTF-8 para los mensajes en español.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
 
 # --- Rutas -------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parents[2]
@@ -77,7 +85,7 @@ VC_RATIOS = [5, 10, 20, 50]  # sensibilidad del ratio V/C
 TOP_FRACTIONS = [0.10, 0.20, 0.30]
 
 # --- Presupuesto de cómputo ---------------------------------------------------
-OPTUNA_TRIALS = 40
+OPTUNA_TRIALS = 60
 OPTUNA_TIMEOUT_S = 900       # 15 minutos por búsqueda como máximo
 SVM_TRAIN_SUBSAMPLE = 10_000  # SVM RBF entrenado sobre submuestra estratificada
 
