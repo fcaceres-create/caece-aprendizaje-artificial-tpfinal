@@ -1,0 +1,117 @@
+{
+  "started": "2026-09-29T02:18:51.376092+00:00",
+  "cv_ranking": [
+    "lightgbm",
+    "xgboost",
+    "random_forest",
+    "mlp",
+    "logreg",
+    "knn",
+    "naive_bayes",
+    "svm_rbf",
+    "tree"
+  ],
+  "encoding_choice": {
+    "lightgbm": "tree_native",
+    "xgboost": "tree_onehot"
+  },
+  "imbalance_models": [
+    "lightgbm",
+    "xgboost",
+    "random_forest"
+  ],
+  "imbalance_choice": {
+    "lightgbm": {
+      "imbalance": "none",
+      "kind": "tree_native",
+      "pr_auc_mean": 0.4589331587060417
+    },
+    "xgboost": {
+      "imbalance": "none",
+      "kind": "tree_onehot",
+      "pr_auc_mean": 0.45223497741252594
+    },
+    "random_forest": {
+      "imbalance": "none",
+      "kind": "tree_onehot",
+      "pr_auc_mean": 0.45122694908206223
+    }
+  },
+  "tuning": [
+    {
+      "model": "lightgbm",
+      "imbalance": "none",
+      "kind": "tree_native",
+      "n_trials": 60,
+      "elapsed_s": 65.1,
+      "timeout_s": 900,
+      "default_pr_auc": 0.4589331587060417,
+      "best_pr_auc": 0.4660431095549131,
+      "best_pr_auc_std": 0.02010939677467803,
+      "improvement": 0.007109950848871449,
+      "best_params": {
+        "n_estimators": 500,
+        "learning_rate": 0.011735884226979234,
+        "num_leaves": 44,
+        "min_child_samples": 20,
+        "subsample": 0.679652764478709,
+        "colsample_bytree": 0.6304130496064624,
+        "reg_lambda": 0.002838259476758965,
+        "reg_alpha": 0.003913399748590477
+      }
+    },
+    {
+      "model": "xgboost",
+      "imbalance": "none",
+      "kind": "tree_onehot",
+      "n_trials": 60,
+      "elapsed_s": 66.6,
+      "timeout_s": 900,
+      "default_pr_auc": 0.45223497741252594,
+      "best_pr_auc": 0.462944603380283,
+      "best_pr_auc_std": 0.024624427257745697,
+      "improvement": 0.010709625967757042,
+      "best_params": {
+        "n_estimators": 500,
+        "learning_rate": 0.022973750787483326,
+        "max_depth": 8,
+        "min_child_weight": 30.907518053133376,
+        "subsample": 0.9927291835047799,
+        "colsample_bytree": 0.4401454361173128,
+        "reg_lambda": 0.11194521528130114,
+        "gamma": 0.003567871029203801
+      }
+    }
+  ],
+  "final": {
+    "key": "lightgbm_tuned",
+    "model": "lightgbm",
+    "imbalance": "none",
+    "kind": "tree_native",
+    "params": {
+      "n_estimators": 500,
+      "learning_rate": 0.011735884226979234,
+      "num_leaves": 44,
+      "min_child_samples": 20,
+      "subsample": 0.679652764478709,
+      "colsample_bytree": 0.6304130496064624,
+      "reg_lambda": 0.002838259476758965,
+      "reg_alpha": 0.003913399748590477
+    }
+  },
+  "threshold": {
+    "profit_threshold": 0.05,
+    "profit_at_threshold": 59772.0,
+    "contacted_pct_at_threshold": 61.90218726959941,
+    "precision_at_threshold": 0.1686517389232968,
+    "recall_at_threshold": 0.8909395973154363,
+    "f1_at_threshold": 0.28361597008946454,
+    "f1_threshold": 0.215,
+    "f1_max": 0.4977951984321411,
+    "profit_at_f1_threshold": 45363.0,
+    "contacted_pct_at_f1_threshold": 13.362005406733841,
+    "theoretical_threshold": 0.05,
+    "profit_contact_all": 54670.0
+  },
+  "finished": "2026-09-29T02:21:50.729459+00:00"
+}

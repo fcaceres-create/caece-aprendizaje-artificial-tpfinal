@@ -1,0 +1,14 @@
+{
+  "profit_threshold": 0.05,
+  "profit_at_threshold": 59772.0,
+  "contacted_pct_at_threshold": 61.90218726959941,
+  "precision_at_threshold": 0.1686517389232968,
+  "recall_at_threshold": 0.8909395973154363,
+  "f1_at_threshold": 0.28361597008946454,
+  "f1_threshold": 0.215,
+  "f1_max": 0.4977951984321411,
+  "profit_at_f1_threshold": 45363.0,
+  "contacted_pct_at_f1_threshold": 13.362005406733841,
+  "theoretical_threshold": 0.05,
+  "profit_contact_all": 54670.0
+}
