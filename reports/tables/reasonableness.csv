@@ -1,0 +1,6 @@
+check,value,reference,ok
+"ROC-AUC sin duration vs referencia 0,75–0,80",0.7836,"0,75–0,80 (rango de referencia del enunciado para este dataset sin duration)",True
+ROC-AUC con duration (leakage) en rango típico alto,0.9326,"> 0,90 esperado: duration por sí sola tiene ROC-AUC ≈ 0,81 en train",True
+PR-AUC muy por encima del azar (prevalencia),0.4354,piso = prevalencia en test (0.115),True
+Modelo final supera a la regresión logística,0.4354,PR-AUC logística = 0.3494,True
+PR-AUC en test dentro de ±2 desvíos de la CV,0.4354,CV = 0.4660 ± 0.0201,True

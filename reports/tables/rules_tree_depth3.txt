@@ -1,0 +1,22 @@
+|--- poutcome_success <= 0.50
+|   |--- n_credit_products <= 0.50
+|   |   |--- season_summer <= 0.50
+|   |   |   |--- weights: [4718.00, 1330.00] class: 0
+|   |   |--- season_summer >  0.50
+|   |   |   |--- weights: [7501.00, 868.00] class: 0
+|   |--- n_credit_products >  0.50
+|   |   |--- contact_cellular <= 0.50
+|   |   |   |--- weights: [9709.00, 423.00] class: 0
+|   |   |--- contact_cellular >  0.50
+|   |   |   |--- weights: [13507.00, 1252.00] class: 0
+|--- poutcome_success >  0.50
+|   |--- housing_no <= 0.50
+|   |   |--- day_cos <= -0.35
+|   |   |   |--- weights: [116.00, 97.00] class: 0
+|   |   |--- day_cos >  -0.35
+|   |   |   |--- weights: [86.00, 132.00] class: 1
+|   |--- housing_no >  0.50
+|   |   |--- pdays_clean <= 177.50
+|   |   |   |--- weights: [179.00, 346.00] class: 1
+|   |   |--- pdays_clean >  177.50
+|   |   |   |--- weights: [106.00, 320.00] class: 1

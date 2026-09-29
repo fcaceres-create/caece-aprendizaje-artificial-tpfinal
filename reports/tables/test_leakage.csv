@@ -1,0 +1,3 @@
+model,label,roc_auc,pr_auc,lift@10,lift@20,gain@20,brier
+final,"LightGBM (final, pre-contacto)",0.7836,0.4354,4.2143,2.982,0.5969,0.0822
+with_duration,LightGBM + duration (leakage),0.9326,0.6072,5.4785,4.1614,0.833,0.0622

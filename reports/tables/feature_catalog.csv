@@ -10,7 +10,7 @@ True,pdays_clean,pdays,NaN cuando pdays = -1,El -1 no es un número de días; el
 True,previously_contacted,pdays,1 si pdays != -1,"Conserva explícitamente la información 'nunca contactado' (23,1 % vs 9,2 % de conversión).",False
 True,day_sin / day_cos,day,sin/cos(2π·day/31),El día del mes es cíclico: el 31 está cerca del 1.,False
 True,contact_known,contact,1 si contact != unknown,"contact=unknown corresponde a un período sin registro del canal (4,0 % de conversión).",False
-True,poutcome_success,poutcome,1 si poutcome = success,"Señal más fuerte disponible antes de llamar (64,8 % de conversión).",False
+True,prev_campaign_success,poutcome,1 si poutcome = success,"Señal más fuerte disponible antes de llamar (64,8 % de conversión).",False
 True,season,month,Estación del año (hemisferio norte),Agrupa meses de bajo volumen para estabilizar su estimación.,False
 True,n_credit_products,"housing, loan, default",Suma de yes en housing + loan + default,Tener préstamos reduce la conversión; resume la carga crediticia.,False
 True,"job, marital, education, default, housing, loan, contact, month, poutcome",originales,Categóricas sin cambios ('unknown' se mantiene como categoría),unknown no es un faltante aleatorio (ver EDA).,False

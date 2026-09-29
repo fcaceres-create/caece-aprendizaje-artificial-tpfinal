@@ -1,0 +1,147 @@
+{
+  "test_metrics": {
+    "final": {
+      "roc_auc": 0.7836,
+      "pr_auc": 0.4354,
+      "lift@20": 2.982,
+      "gain@20": 0.5969,
+      "brier": 0.0822
+    },
+    "logreg": {
+      "roc_auc": 0.7379,
+      "pr_auc": 0.3494,
+      "lift@20": 2.4546,
+      "gain@20": 0.4914,
+      "brier": 0.1834
+    },
+    "dummy": {
+      "roc_auc": 0.5,
+      "pr_auc": 0.1152,
+      "lift@20": 0.9876,
+      "gain@20": 0.1977,
+      "brier": 0.102
+    },
+    "with_duration": {
+      "roc_auc": 0.9326,
+      "pr_auc": 0.6072,
+      "lift@20": 4.1614,
+      "gain@20": 0.833,
+      "brier": 0.0622
+    }
+  },
+  "thresholds": {
+    "final": 0.05,
+    "logreg": 0.275,
+    "dummy": 0.05,
+    "with_duration": 0.05
+  },
+  "business": [
+    {
+      "strategy": "Top 10 % del ranking",
+      "contacted": 453,
+      "contacted_pct": 10.0,
+      "conversions": 220,
+      "gain_pct": 42.23,
+      "precision_pct": 48.57,
+      "lift": 4.21,
+      "profit": 3947.0,
+      "profit_vs_all": -1952.0
+    },
+    {
+      "strategy": "Top 20 % del ranking",
+      "contacted": 905,
+      "contacted_pct": 20.0,
+      "conversions": 311,
+      "gain_pct": 59.69,
+      "precision_pct": 34.36,
+      "lift": 2.98,
+      "profit": 5315.0,
+      "profit_vs_all": -584.0
+    },
+    {
+      "strategy": "Top 30 % del ranking",
+      "contacted": 1357,
+      "contacted_pct": 30.0,
+      "conversions": 353,
+      "gain_pct": 67.75,
+      "precision_pct": 26.01,
+      "lift": 2.26,
+      "profit": 5703.0,
+      "profit_vs_all": -196.0
+    },
+    {
+      "strategy": "Umbral operativo (0.050)",
+      "contacted": 2762,
+      "contacted_pct": 61.09,
+      "conversions": 451,
+      "gain_pct": 86.56,
+      "precision_pct": 16.33,
+      "lift": 1.42,
+      "profit": 6258.0,
+      "profit_vs_all": 359.0
+    },
+    {
+      "strategy": "Contactar a todos",
+      "contacted": 4521,
+      "contacted_pct": 100.0,
+      "conversions": 521,
+      "gain_pct": 100.0,
+      "precision_pct": 11.52,
+      "lift": 1.0,
+      "profit": 5899.0,
+      "profit_vs_all": 0.0
+    },
+    {
+      "strategy": "No contactar a nadie",
+      "contacted": 0,
+      "contacted_pct": 0.0,
+      "conversions": 0,
+      "gain_pct": 0.0,
+      "precision_pct": NaN,
+      "lift": NaN,
+      "profit": 0.0,
+      "profit_vs_all": -5899.0
+    }
+  ],
+  "worst_segments": [
+    {
+      "segment_var": "age_group",
+      "segment": "65+",
+      "n": 89,
+      "conversions": 32,
+      "conversion_rate": 0.3595505617977528,
+      "roc_auc": 0.6178728070175439,
+      "pr_auc": 0.5325351204334511,
+      "recall_at_thr": 1.0,
+      "precision_at_thr": 0.3595505617977528,
+      "mean_score": 0.4013531121640309,
+      "reliable": true
+    },
+    {
+      "segment_var": "contact",
+      "segment": "unknown",
+      "n": 1324,
+      "conversions": 61,
+      "conversion_rate": 0.04607250755287009,
+      "roc_auc": 0.6458730838622588,
+      "pr_auc": 0.09729238267842967,
+      "recall_at_thr": 0.29508196721311475,
+      "precision_at_thr": 0.07563025210084033,
+      "mean_score": 0.041491172725723814,
+      "reliable": true
+    },
+    {
+      "segment_var": "job",
+      "segment": "blue-collar",
+      "n": 946,
+      "conversions": 69,
+      "conversion_rate": 0.07293868921775898,
+      "roc_auc": 0.7274469948606085,
+      "pr_auc": 0.27340288564679444,
+      "recall_at_thr": 0.7536231884057971,
+      "precision_at_thr": 0.11659192825112108,
+      "mean_score": 0.0730309680891277,
+      "reliable": true
+    }
+  ]
+}

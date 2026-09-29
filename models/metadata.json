@@ -43,7 +43,7 @@
     "day_sin",
     "day_cos",
     "contact_known",
-    "poutcome_success",
+    "prev_campaign_success",
     "n_credit_products",
     "job",
     "marital",
@@ -85,8 +85,8 @@
     "gain@20": 0.6306645020359408,
     "gain@30": 0.7160237669414252,
     "brier": 0.08049750187645158,
-    "fit_time_s": 0.9205670800001826,
-    "predict_ms_per_1k": 15.107426886181177
+    "fit_time_s": 0.9278073399997083,
+    "predict_ms_per_1k": 14.916969771428302
   },
   "cv_metrics_std": {
     "roc_auc": 0.009896249614267846,
@@ -98,8 +98,8 @@
     "gain@20": 0.0140805977447676,
     "gain@30": 0.014005982533156356,
     "brier": 0.0016358665555315593,
-    "fit_time_s": 0.0248772048058175,
-    "predict_ms_per_1k": 1.0131928278884543
+    "fit_time_s": 0.014118623826781173,
+    "predict_ms_per_1k": 0.6128280606969693
   },
   "train_rows": 40690,
   "train_positive_rate": 0.11717866797739002,
@@ -108,7 +108,7 @@
     "test": "dc8d576e9bda0f41ee891251bd84bab9a39ce576cba715aac08adc2374a01fde"
   },
   "seed": 42,
-  "created_utc": "2026-09-29T02:21:50.729137+00:00",
+  "created_utc": "2026-09-29T02:28:41.569132+00:00",
   "versions": {
     "scikit-learn": "1.9.1",
     "lightgbm": "4.7.0",

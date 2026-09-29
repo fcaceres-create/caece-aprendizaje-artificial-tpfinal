@@ -28,7 +28,7 @@ SEASON = {"dec": "winter", "jan": "winter", "feb": "winter",
 BASE_NUMERIC = [
     "age", "balance_log", "balance_negative", "balance_zero", "campaign_w",
     "pdays_clean", "previously_contacted", "previous_w", "day_sin", "day_cos",
-    "contact_known", "poutcome_success", "n_credit_products",
+    "contact_known", "prev_campaign_success", "n_credit_products",
 ]
 CATEGORICAL = [
     "job", "marital", "education", "default", "housing", "loan",
@@ -60,7 +60,7 @@ FEATURE_CATALOG = [
      "El día del mes es cíclico: el 31 está cerca del 1.", False),
     ("contact_known", "contact", "1 si contact != unknown",
      "contact=unknown corresponde a un período sin registro del canal (4,0 % de conversión).", False),
-    ("poutcome_success", "poutcome", "1 si poutcome = success",
+    ("prev_campaign_success", "poutcome", "1 si poutcome = success",
      "Señal más fuerte disponible antes de llamar (64,8 % de conversión).", False),
     ("season", "month", "Estación del año (hemisferio norte)",
      "Agrupa meses de bajo volumen para estabilizar su estimación.", False),
@@ -114,7 +114,7 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
         out["day_sin"] = np.sin(angle)
         out["day_cos"] = np.cos(angle)
         out["contact_known"] = (X["contact"] != "unknown").astype(int)
-        out["poutcome_success"] = (X["poutcome"] == "success").astype(int)
+        out["prev_campaign_success"] = (X["poutcome"] == "success").astype(int)
         out["n_credit_products"] = sum((X[c] == "yes").astype(int) for c in ["housing", "loan", "default"])
         if self.use_duration:
             out["duration"] = X["duration"].astype(float)

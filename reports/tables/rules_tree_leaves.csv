@@ -1,0 +1,9 @@
+rule,n_train,share_pct,conversion_rate,lift
+poutcome = success Y housing = no Y pdays_clean > 177.500,426,1.0469,0.7512,6.4105
+poutcome = success Y housing = no Y pdays_clean <= 177.500,525,1.2902,0.659,5.6243
+poutcome = success Y housing = yes Y day_cos > -0.346,218,0.5358,0.6055,5.1674
+poutcome = success Y housing = yes Y day_cos <= -0.346,213,0.5235,0.4554,3.8864
+poutcome != success Y n_credit_products <= 0.500 Y season != summer,6048,14.8636,0.2199,1.8767
+poutcome != success Y n_credit_products <= 0.500 Y season = summer,8369,20.5677,0.1037,0.8851
+poutcome != success Y n_credit_products > 0.500 Y contact = cellular,14759,36.2718,0.0848,0.7239
+poutcome != success Y n_credit_products > 0.500 Y contact != cellular,10132,24.9005,0.0417,0.3563

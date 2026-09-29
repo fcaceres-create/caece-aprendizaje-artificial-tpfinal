@@ -1,0 +1,7 @@
+strategy,contacted,contacted_pct,conversions,gain_pct,precision_pct,lift,profit,profit_vs_all
+Top 10 % del ranking,453,10.0,220,42.23,48.57,4.21,3947.0,-1952.0
+Top 20 % del ranking,905,20.0,311,59.69,34.36,2.98,5315.0,-584.0
+Top 30 % del ranking,1357,30.0,353,67.75,26.01,2.26,5703.0,-196.0
+Umbral operativo (0.050),2762,61.09,451,86.56,16.33,1.42,6258.0,359.0
+Contactar a todos,4521,100.0,521,100.0,11.52,1.0,5899.0,0.0
+No contactar a nadie,0,0.0,0,0.0,,,0.0,-5899.0
