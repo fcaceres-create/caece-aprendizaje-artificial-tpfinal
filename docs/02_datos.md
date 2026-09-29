@@ -39,7 +39,7 @@ Notebook con todo el detalle: `notebooks/01_eda.ipynb`. Todas las cifras provien
      desaparece después del 30 %: es un período (inicio de 2008) sin registro del canal.
      Conversión 4,0 % vs 14,8 % del resto.
    - `poutcome = unknown` (81,7 %) = cliente nunca contactado antes. Conversión 9,2 % vs 23,1 %.
-   - `education = unknown` (4,1 %) convierte 13,9 %, por encima de la base: no se parece a la
+   - `education = unknown` (4,1 %) convierte 14,0 %, por encima de la base: no se parece a la
      moda (`secondary`, 10,5 %), así que imputarlo sería incorrecto.
 3. **`pdays = -1`, `previous = 0` y `poutcome = unknown` son la misma información**: las
    33.249 filas con `pdays = -1` tienen `previous = 0` y `poutcome = unknown`. Solo 5 filas

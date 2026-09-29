@@ -1,7 +1,7 @@
 {
   "holdout_file": "banca_test.csv",
   "rows": 4521,
-  "evaluated_utc": "2026-09-29T02:28:43.982319+00:00",
+  "evaluated_utc": "2026-09-29T02:47:29.398930+00:00",
   "model_file_sha256": "36f3f13a431524d3ea41927d622f7c3fa399eac0cccebf76b67708b424bb81a7",
   "note": "Evaluación única del modelo ya seleccionado; modelo, hiperparámetros y umbral se fijaron con train (CV). Ningún resultado de este archivo se usó para decidir."
 }

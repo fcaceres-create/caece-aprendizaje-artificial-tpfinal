@@ -219,12 +219,17 @@ tiene Brier.
   | Candidato | Puntaje |
   |---|---|
   | **LightGBM tuneado** | **0,690** |
-  | XGBoost tuneado | 0,647 |
-  | XGBoost por defecto | 0,640 |
+  | XGBoost tuneado | ≈ 0,65–0,67 |
+  | XGBoost por defecto | ≈ 0,64–0,65 |
   | LightGBM por defecto | 0,632 |
   | Regresión logística | 0,400 |
 
 - **Evidencia.** `decision_matrix.csv`.
+- **Nota de reproducibilidad.** Todas las métricas son idénticas entre ejecuciones (semilla 42).
+  La única excepción es el tiempo de inferencia, que depende de la carga de la máquina, por lo
+  que los puntajes de los candidatos no ganadores varían en la segunda o tercera cifra decimal.
+  LightGBM tuneado gana en todas las ejecuciones: tiene la mejor PR-AUC y el mejor lift, y su
+  puntaje no depende de la velocidad, porque es el más lento de los candidatos de boosting.
 - **Por qué no la logística.** Es la más estable e interpretable, pero pierde 0,05 de PR-AUC
   (≈ 12 % relativo) y 0,3 de lift@20 %. La interpretabilidad de LightGBM se recupera con SHAP.
 

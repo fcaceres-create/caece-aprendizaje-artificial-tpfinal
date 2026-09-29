@@ -1,5 +1,5 @@
 {
-  "started": "2026-09-29T02:25:32.732530+00:00",
+  "started": "2026-09-29T02:44:16.515202+00:00",
   "cv_ranking": [
     "lightgbm",
     "xgboost",
@@ -43,7 +43,7 @@
       "imbalance": "none",
       "kind": "tree_native",
       "n_trials": 60,
-      "elapsed_s": 67.0,
+      "elapsed_s": 69.4,
       "timeout_s": 900,
       "default_pr_auc": 0.4589331587060417,
       "best_pr_auc": 0.4660431095549131,
@@ -65,7 +65,7 @@
       "imbalance": "none",
       "kind": "tree_onehot",
       "n_trials": 60,
-      "elapsed_s": 68.6,
+      "elapsed_s": 71.3,
       "timeout_s": 900,
       "default_pr_auc": 0.45223497741252594,
       "best_pr_auc": 0.462944603380283,
@@ -113,5 +113,5 @@
     "theoretical_threshold": 0.05,
     "profit_contact_all": 54670.0
   },
-  "finished": "2026-09-29T02:28:41.569597+00:00"
+  "finished": "2026-09-29T02:47:29.324188+00:00"
 }

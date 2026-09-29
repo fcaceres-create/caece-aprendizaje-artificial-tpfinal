@@ -1,6 +1,6 @@
 candidate,model,label,imbalance,kind,tuned,pr_auc,pr_auc_std,roc_auc,lift@20,brier,predict_ms_per_1k,interpretability,score_pr_auc,score_lift@20,score_stability,score_interpretability,score_inference_speed,weighted_score
-lightgbm_tuned,lightgbm,LightGBM,none,tree_native,True,0.466,0.0201,0.806,3.1525,0.0805,15.4321,2,1.0,1.0,0.3492,0.25,0.0,0.6899
-xgboost_tuned,xgboost,XGBoost,none,tree_onehot,True,0.4629,0.0246,0.8047,3.1221,0.081,6.9961,2,0.9429,0.8986,0.0,0.25,0.7997,0.6721
-xgboost_default,xgboost,XGBoost,none,tree_onehot,False,0.4522,0.0185,0.8024,3.0917,0.0817,6.9226,2,0.7457,0.7972,0.4741,0.25,0.8104,0.6499
-lightgbm_default,lightgbm,LightGBM,none,tree_native,False,0.4589,0.0202,0.8038,3.1221,0.081,13.0341,2,0.8691,0.8986,0.3422,0.25,0.1707,0.6347
-logreg_default,logreg,Regresión logística,weights,linear,False,0.4117,0.0117,0.7756,2.8527,0.18,5.7386,5,0.0,0.0,1.0,1.0,1.0,0.4
+lightgbm_tuned,lightgbm,LightGBM,none,tree_native,True,0.466,0.0201,0.806,3.1525,0.0805,15.3116,2,1.0,1.0,0.3492,0.25,0.0,0.6899
+xgboost_tuned,xgboost,XGBoost,none,tree_onehot,True,0.4629,0.0246,0.8047,3.1221,0.081,6.9285,2,0.9429,0.8986,0.0,0.25,0.7477,0.6669
+xgboost_default,xgboost,XGBoost,none,tree_onehot,False,0.4522,0.0185,0.8024,3.0917,0.0817,6.3576,2,0.7457,0.7972,0.4741,0.25,0.8288,0.6518
+lightgbm_default,lightgbm,LightGBM,none,tree_native,False,0.4589,0.0202,0.8038,3.1221,0.081,13.1347,2,0.8691,0.8986,0.3422,0.25,0.1446,0.6321
+logreg_default,logreg,Regresión logística,weights,linear,False,0.4117,0.0117,0.7756,2.8527,0.18,5.3018,5,0.0,0.0,1.0,1.0,1.0,0.4
