@@ -112,31 +112,72 @@ def build_slides() -> list[dict]:
         "Explicar por qué accuracy no sirve: el modelo trivial tiene 88 % y no encuentra a nadie. Por eso las "
         "métricas son de ranking.", "1 · Negocio")
 
-    # 4. Métricas y economía ----------------------------------------------------------------------
-    add("Métricas y marco económico", f"""
+    # 4a. Métricas explicadas ---------------------------------------------------------------------
+    add("¿Cómo medimos si el modelo sirve?", f"""
+      <table class="explain"><thead><tr><th>Métrica</th><th>Qué responde, en palabras simples</th><th>Cómo leerla</th></tr></thead><tbody>
+        <tr class="hl"><td><b>PR-AUC</b><br><small>principal</small></td>
+            <td>De los clientes que el modelo pone arriba del ranking, ¿cuántos realmente se convierten?
+                Resume la <i>precisión</i> a lo largo de todo el ranking.</td>
+            <td>0 a 1. Al azar da la tasa base (≈ 0,117). Cuanto más alto, mejor.</td></tr>
+        <tr class="hl"><td><b>Gain @ k %</b><br><small>principal</small></td>
+            <td>Si llamo solo al k % mejor rankeado, ¿qué % del total de conversiones capturo?</td>
+            <td>Ej.: gain@20 % = 60 % → con 1 de cada 5 llamadas consigo 6 de cada 10 clientes.</td></tr>
+        <tr class="hl"><td><b>Lift @ k %</b><br><small>principal</small></td>
+            <td>¿Cuántas veces mejor que llamar al azar es ese grupo?</td>
+            <td>Ej.: lift 4 en el top 10 % → ahí hay 4 veces más conversiones que en promedio. Azar = 1.</td></tr>
+        <tr><td><b>ROC-AUC</b><br><small>secundaria</small></td>
+            <td>Tomando un cliente que convierte y uno que no, ¿con qué probabilidad el modelo pone primero al que convierte?</td>
+            <td>0,5 = azar, 1 = perfecto. Sirve para comparar con la literatura.</td></tr>
+        <tr><td><b>Brier</b><br><small>secundaria</small></td>
+            <td>¿Las probabilidades son creíbles? Si el modelo dice “30 %”, ¿convierten de verdad ~30 % de esos clientes?</td>
+            <td>Error cuadrático medio: 0 = perfecto, más bajo es mejor.</td></tr>
+      </tbody></table>
+      <p class="foot"><b>Por qué no accuracy:</b> el 88 % de los clientes no se convierte, así que un modelo que dice siempre
+         “no” acierta el 88 % de las veces… sin encontrar a ningún cliente.</p>""",
+        "Las tres primeras miden lo que le importa al banco: que los que convierten queden arriba del listado. "
+        "ROC-AUC se usa para comparar con otros trabajos. Brier verifica que las probabilidades sirvan para hacer cuentas.",
+        "1 · Negocio")
+
+    # 4b. Fórmula del beneficio explicada ------------------------------------------------------------
+    tp = int(n["cm_tp"].replace(".", ""))
+    fp = int(n["cm_fp"].replace(".", ""))
+    pos = int(n["pos_test"].replace(".", ""))
+    tot = int(n["test_rows"].replace(".", ""))
+    V, C = int(cfg.VALUE_PER_CONVERSION), int(cfg.COST_PER_CONTACT)
+    add("¿Cuánto gana el banco? El beneficio esperado", f"""
+      <div class="formula">Beneficio = <span class="v">V</span> · <span class="t">TP</span> − <span class="c">C</span> · (<span class="t">TP</span> + <span class="f">FP</span>)</div>
       <div class="cols">
         <div>
-          <h3>Métricas</h3>
-          <table><thead><tr><th>Tipo</th><th>Métrica</th><th>Para qué</th></tr></thead><tbody>
-            <tr><td>Primaria</td><td><b>PR-AUC</b></td><td>Calidad del ranking sobre la clase minoritaria (azar ≈ 0,117)</td></tr>
-            <tr><td>Primaria</td><td><b>Lift / gain</b> top 10-20-30 %</td><td>¿Qué % de conversiones capturo llamando a pocos?</td></tr>
-            <tr><td>Secundaria</td><td>ROC-AUC</td><td>Comparación con la literatura</td></tr>
-            <tr><td>Secundaria</td><td>Brier, calibración</td><td>¿Las probabilidades son creíbles?</td></tr>
-          </tbody></table>
+          <div class="terms">
+            <div class="term"><span class="v">V</span><div><b>Valor de una conversión</b><br>Lo que gana el banco cada vez que un
+                 cliente llamado acepta el producto. Supuesto: <b>V = {V}</b>.</div></div>
+            <div class="term"><span class="c">C</span><div><b>Costo de una llamada</b><br>Operador, telefonía, molestia al cliente.
+                 Supuesto: <b>C = {C}</b>.</div></div>
+            <div class="term"><span class="t">TP</span><div><b>Verdaderos positivos</b><br>Clientes que <b>llamamos</b> y
+                 <b>sí</b> se convirtieron.</div></div>
+            <div class="term"><span class="f">FP</span><div><b>Falsos positivos</b><br>Clientes que <b>llamamos</b> y
+                 <b>no</b> se convirtieron (llamada sin resultado).</div></div>
+          </div>
+          <p class="small-text">En palabras: <b>ingresos de las conversiones logradas − costo de todas las llamadas
+             hechas</b> (TP + FP = total de llamadas). A quien no se llama no cuesta ni genera nada.</p>
         </div>
         <div>
-          <h3>Beneficio esperado</h3>
-          <div class="formula">Beneficio = V · TP − C · (TP + FP)</div>
-          <ul>
-            <li>Supuestos: <b>C = 1</b> por llamada, <b>V = 20</b> por conversión.</li>
-            <li>Llamar conviene si <b>p · V &gt; C</b> ⇒ <b>p &gt; C/V = 0,05</b>.</li>
-            <li>Lo que importa es el ratio V/C → sensibilidad con 5, 10, 20 y 50.</li>
-            <li>El banco los reemplaza por valores reales en <code>config.py</code>.</li>
-          </ul>
+          <div class="example">
+            <h3>Ejemplo con los resultados reales del test</h3>
+            <p>El modelo recomendó llamar a {i(tp + fp)} clientes: <b>{i(tp)}</b> se convirtieron (TP) y
+               <b>{i(fp)}</b> no (FP).</p>
+            <div class="calc">{V} × {i(tp)} − {C} × ({i(tp)} + {i(fp)})<br>= {i(V * tp)} − {i(C * (tp + fp))} = <b>{i(V * tp - C * (tp + fp))}</b></div>
+            <p>Llamar a los {i(tot)}: {V} × {i(pos)} − {C} × {i(tot)} = <b>{i(V * pos - C * tot)}</b>.</p>
+          </div>
+          <div class="callout"><b>Regla de decisión:</b> llamar a un cliente con probabilidad <b>p</b> de convertir conviene si
+             lo que se espera ganar (<b>p × V</b>) supera lo que cuesta (<b>C</b>):
+             p × {V} &gt; {C} ⇒ <b>p &gt; {C}/{V} = 0,05</b> (5 %).</div>
         </div>
       </div>""",
-        "C y V son supuestos ilustrativos. El umbral teórico 0,05 va a reaparecer: el umbral óptimo empírico da "
-        "exactamente eso, lo que prueba que el modelo está calibrado.", "1 · Negocio")
+        "V y C son supuestos: el banco no los informa. Lo que importa es la relación entre ambos (V/C = 20), por eso "
+        "después se muestra qué pasa con 5, 10, 20 y 50. El banco puede poner sus valores reales en config.py y todo "
+        "se recalcula. El umbral teórico de 5 % reaparece más adelante: el óptimo empírico da exactamente eso.",
+        "1 · Negocio")
 
     # 5. Datos --------------------------------------------------------------------------------------
     add("Los datos: Bank Marketing (UCI)", f"""
@@ -690,6 +731,15 @@ tr.hl td{background:var(--hl);font-weight:600}
 .vs{font-size:28px;color:var(--muted);font-weight:700}
 pre{background:#0f1b2d;color:#d6e2f0;padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.4;margin:4px 0;overflow:hidden}
 .big-list li{font-size:19px;margin:10px 0}
+table.explain td{font-size:15px;padding:7px 9px}table.explain td:first-child{white-space:nowrap}table.explain td small{color:var(--muted);font-weight:400}
+.formula .v{color:#0f7c83}.formula .c{color:#e4572e}.formula .t{color:#2e8b57}.formula .f{color:#8a5a00}
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.term{display:flex;gap:10px;align-items:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;line-height:1.35}
+.term>span{font-family:Georgia,serif;font-weight:700;font-size:26px;min-width:44px;text-align:center}
+.term .v{color:#0f7c83}.term .c{color:#e4572e}.term .t{color:#2e8b57}.term .f{color:#8a5a00}
+.example{background:#fffaf0;border:1px solid #f0dcb4;border-radius:10px;padding:10px 16px;font-size:16px;margin-bottom:10px}
+.example h3{margin-top:0;font-size:18px}
+.calc{font-family:Consolas,Menlo,monospace;font-size:17px;background:#fff;border-radius:6px;padding:8px 12px;margin:6px 0;border:1px solid #f0dcb4}
 .pipe{display:flex;align-items:stretch;gap:26px;margin-top:14px;flex:0 0 auto}
 .pipe .p{flex:1;border:1.5px solid #6b7a90;border-radius:10px;padding:10px 12px;text-align:center;font-weight:700;font-size:16px;position:relative}
 .pipe .p small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:3px}
