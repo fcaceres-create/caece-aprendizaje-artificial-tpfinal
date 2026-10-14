@@ -1,0 +1,14 @@
+# Blueprint de Render: publica la API + frontend propio desde este repo usando app/Dockerfile.
+# Render → New → Blueprint → elegir este repositorio. Cada push a main redeploya automáticamente.
+services:
+  - type: web
+    name: captacion-clientes
+    runtime: docker
+    dockerfilePath: ./app/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ALLOWED_ORIGINS
+        value: "*"

@@ -62,7 +62,7 @@ notebooks → diagramas → informe.
 python -m bank_captacion.pipeline            # ~5 minutos
 python -m bank_captacion.pipeline --stage train   # o una etapa: data, eda, features, train,
                                                   # evaluate, explain, notebooks, report
-python -m pytest -q                          # 29 tests
+python -m pytest -q                          # 31 tests
 ```
 
 En macOS y Linux también funciona `make all`, `make test`, `make api` y `make ui`.
@@ -70,27 +70,38 @@ En macOS y Linux también funciona `make all`, `make test`, `make api` y `make u
 El PDF del informe se genera con `docx2pdf`, que requiere Microsoft Word. Si no está disponible,
 se generan igual el `.md` y el `.docx`.
 
-## API y UI
+## Aplicación web: frontend + API
+
+La API (FastAPI) sirve también un **frontend propio** (`app/web`: HTML, CSS y JavaScript, sin
+dependencias). Tiene tres pestañas:
+- **Cliente:** formulario, probabilidad, recomendación y las 3 variables SHAP con más peso.
+- **Campaña:** subir un CSV o usar una muestra de ejemplo; elegir el % a llamar y ver beneficio y
+  curvas.
+- **El modelo:** métricas y enlaces.
+
+Los supuestos económicos (V, C) se pueden modificar desde la página.
 
 ### Sin Docker
 
-Usar dos terminales, las dos con el entorno virtual activado:
-
 ```bash
-python -m uvicorn app.api.main:app --port 8000        # API → http://localhost:8000/docs
-python -m streamlit run app/ui/streamlit_app.py       # UI  → http://localhost:8501
+python -m uvicorn app.api.main:app --port 8000        # frontend → http://localhost:8000 · API → /docs
+python -m streamlit run app/ui/streamlit_app.py       # UI interna alternativa → http://localhost:8501
 ```
 
-La UI toma la URL de la API desde la variable `API_URL` (por defecto `http://localhost:8000`).
+Con `?demo` en la URL (`http://localhost:8000/?demo`) se cargan ejemplos automáticamente.
 
-### Con Docker
+### Con Docker (verificado)
 
 ```bash
-docker compose -f app/docker-compose.yml up --build
+docker compose -f app/docker-compose.yml up --build -d   # API + frontend :8000 · Streamlit :8501
+docker compose -f app/docker-compose.yml down
 ```
 
-Nota: el `Dockerfile` y el `docker-compose.yml` están escritos pero **no se probaron**, porque
-Docker no estaba instalado en la máquina de desarrollo. La ejecución sin Docker sí está verificada.
+### Publicación en la web
+
+El repo incluye `render.yaml`. En Render, ir a **New → Blueprint**, elegir este repo y la app queda
+publicada; cada push a `main` la redeploya. Detalles y la alternativa con Hugging Face Spaces en
+[docs/despliegue.md](docs/despliegue.md).
 
 ### Endpoints
 
@@ -117,6 +128,7 @@ Si `/predict` recibe `duration` en el payload, responde **422**: el modelo es pr
 │   ├── explain.py          # SHAP, coeficientes de la logística, árbol de reglas
 │   ├── business.py         # lift, gain, deciles, beneficio, sensibilidad
 │   ├── inference.py        # inferencia liviana (usada por la API)
+│   ├── web_assets.py       # datos estáticos del frontend (métricas y muestra)
 │   ├── diagram.py          # diagramas del pipeline (PNG)
 │   ├── export_report.py    # plantilla → informe .md / .docx / .pdf
 │   └── pipeline.py         # orquestador (comando único)
@@ -124,7 +136,7 @@ Si `/predict` recibe `duration` en el payload, responde **422**: el modelo es pr
 ├── models/                 # model_final.joblib, metadata.json, variantes de comparación
 ├── reports/                # informe, figuras y tablas
 ├── docs/                   # negocio, datos, preparación, decision log, diagramas
-├── app/                    # API FastAPI, UI Streamlit, Docker
+├── app/                    # API FastAPI, frontend web propio, UI Streamlit, Docker
 └── tests/                  # features, leakage, modelo, API
 ```
 

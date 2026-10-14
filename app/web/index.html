@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Captación de clientes</title>
+<meta name="description" content="Demo del modelo pre-contacto que prioriza a qué clientes llamar en una campaña de marketing bancario. TP Final Aprendizaje Artificial, CAECE.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f7c83'/%3E%3Cpath d='M9 21l5-6 4 3 5-8' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#cliente">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 21l5-6 4 3 5-8"/></svg></span>
+      <span><b>Captación</b> de clientes</span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button role="tab" data-tab="cliente" aria-selected="true">Cliente</button>
+      <button role="tab" data-tab="campana" aria-selected="false">Campaña</button>
+      <button role="tab" data-tab="modelo" aria-selected="false">El modelo</button>
+    </nav>
+    <div class="top-actions">
+      <span id="api-status" class="api-status" title="Estado de la API"><i></i><span>Conectando…</span></span>
+      <button id="theme-toggle" class="icon-btn" aria-label="Cambiar tema claro/oscuro" title="Tema">
+        <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <div>
+      <h1>¿A quién conviene llamar?</h1>
+      <p>Un modelo de <b>machine learning</b> estima la probabilidad de que un cliente acepte la oferta del banco,
+         usando solo información disponible <b>antes</b> de la llamada. Con eso se ordena la campaña y se decide a quién contactar.</p>
+    </div>
+    <div class="kpis" id="kpis" aria-label="Resultados del modelo en datos de prueba"></div>
+  </section>
+
+  <section class="assumptions card" aria-label="Supuestos económicos">
+    <div>
+      <h2>Supuestos económicos</h2>
+      <p class="muted">Se usan para calcular el valor esperado y el beneficio. Al modificarlos, todo se recalcula.</p>
+    </div>
+    <label class="field compact">Valor de una conversión (V)
+      <input type="number" id="v-value" min="0.1" step="1" value="20"></label>
+    <label class="field compact">Costo de una llamada (C)
+      <input type="number" id="c-value" min="0.01" step="0.5" value="1"></label>
+    <div class="rule" id="rule-text"></div>
+  </section>
+
+  <!-- ===================== CLIENTE ===================== -->
+  <section id="tab-cliente" class="tab-panel" role="tabpanel">
+    <div class="grid-2">
+      <form id="client-form" class="card" autocomplete="off">
+        <div class="card-head">
+          <h2>Datos del cliente</h2>
+          <div class="presets" aria-label="Ejemplos">
+            <span class="muted">Ejemplos:</span>
+            <button type="button" class="chip" data-preset="exito">Jubilado con éxito previo</button>
+            <button type="button" class="chip" data-preset="profesional">Profesional, octubre</button>
+            <button type="button" class="chip" data-preset="masiva">Campaña masiva de mayo</button>
+          </div>
+        </div>
+
+        <fieldset><legend>Perfil</legend>
+          <div class="fields">
+            <label class="field">Edad<input type="number" name="age" min="18" max="100" value="35" required></label>
+            <label class="field">Ocupación<select name="job" data-levels="job"></select></label>
+            <label class="field">Estado civil<select name="marital" data-levels="marital"></select></label>
+            <label class="field">Educación<select name="education" data-levels="education"></select></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Situación financiera</legend>
+          <div class="fields">
+            <label class="field">Saldo promedio anual<input type="number" name="balance" min="-20000" max="200000" value="1500" required></label>
+            <label class="field">Préstamo hipotecario<select name="housing" data-levels="yesno"></select></label>
+            <label class="field">Préstamo personal<select name="loan" data-levels="yesno"></select></label>
+            <label class="field">Préstamos impagos<select name="default" data-levels="yesno"></select></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Contacto en esta campaña</legend>
+          <div class="fields">
+            <label class="field">Canal<select name="contact" data-levels="contact"></select></label>
+            <label class="field">Mes<select name="month" data-levels="month"></select></label>
+            <label class="field">Día del mes<input type="number" name="day" min="1" max="31" value="15" required></label>
+            <label class="field">Contactos en la campaña<input type="number" name="campaign" min="1" max="100" value="1" required></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Historial de campañas anteriores</legend>
+          <div class="fields">
+            <label class="field">Contactos previos<input type="number" name="previous" min="0" max="300" value="0" required></label>
+            <label class="field">Días desde el último contacto<input type="number" name="pdays" min="-1" max="999" value="-1" required>
+              <small>-1 = nunca fue contactado</small></label>
+            <label class="field">Resultado anterior<select name="poutcome" data-levels="poutcome"></select></label>
+          </div>
+        </fieldset>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Estimar probabilidad</button>
+          <span class="form-error" id="form-error" role="alert"></span>
+        </div>
+      </form>
+
+      <div class="card result" id="result" aria-live="polite">
+        <div class="empty" id="result-empty">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M15 28l6-7 5 4 7-9"/></svg>
+          <p>Complete los datos o elija un ejemplo y presione <b>Estimar probabilidad</b>.</p>
+        </div>
+        <div id="result-body" hidden>
+          <div class="hero">
+            <div>
+              <div class="hero-label">Probabilidad de conversión</div>
+              <div class="hero-value" id="r-prob">—</div>
+            </div>
+            <div class="decision" id="r-decision"></div>
+          </div>
+          <div class="meter" aria-hidden="true">
+            <span class="thr-label" id="r-thr-label"></span>
+            <div class="meter-track"><div class="meter-fill" id="r-meter"></div><div class="meter-thr" id="r-thr"></div></div>
+            <div class="meter-scale"><span>0 %</span><span>100 %</span></div>
+          </div>
+          <div class="mini-stats">
+            <div><span class="mini-label">Decil</span><span class="mini-value" id="r-decile">—</span><span class="mini-note">1 = 10 % de mejores clientes</span></div>
+            <div><span class="mini-label">Valor esperado de llamar</span><span class="mini-value" id="r-ev">—</span><span class="mini-note">p × V − C</span></div>
+            <div><span class="mini-label">vs tasa base</span><span class="mini-value" id="r-lift">—</span><span class="mini-note">11,7 % convierte en promedio</span></div>
+          </div>
+          <h3>¿Por qué? Las 3 variables con más peso</h3>
+          <p class="muted small">Contribución SHAP: cuánto empuja cada variable la probabilidad hacia arriba o hacia abajo respecto de un cliente promedio.</p>
+          <div id="r-factors" class="factors"></div>
+          <p class="explanation" id="r-text"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CAMPAÑA ===================== -->
+  <section id="tab-campana" class="tab-panel" role="tabpanel" hidden>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>Priorizar una campaña</h2>
+          <p class="muted">Suba un CSV con los clientes (mismas columnas que <code>banca_train.csv</code>; separador <code>,</code> o <code>;</code>)
+             o use la muestra de 400 clientes reales del conjunto de prueba.</p>
+        </div>
+        <div class="upload-actions">
+          <button type="button" class="btn" id="btn-sample">Usar muestra de ejemplo</button>
+          <label class="btn primary file-btn">Subir CSV<input type="file" id="file-input" accept=".csv,text/csv"></label>
+        </div>
+      </div>
+      <p class="form-error" id="batch-error" role="alert"></p>
+    </div>
+
+    <div id="campaign-body" hidden>
+      <div class="card controls">
+        <label class="field grow">% de clientes a llamar (los mejor rankeados)
+          <div class="slider-row"><input type="range" id="pct" min="1" max="100" value="20"><output id="pct-out">20 %</output></div>
+        </label>
+        <div class="seg" role="group" aria-label="Atajos">
+          <button type="button" class="chip" data-pct="10">Top 10 %</button>
+          <button type="button" class="chip" data-pct="20">Top 20 %</button>
+          <button type="button" class="chip" data-pct="thr">Umbral óptimo</button>
+          <button type="button" class="chip" data-pct="100">Todos</button>
+        </div>
+      </div>
+
+      <div class="kpis wide" id="camp-kpis"></div>
+
+      <div class="grid-2">
+        <figure class="card chart-card">
+          <figcaption><h3>Conversiones capturadas según % llamado</h3>
+            <p class="muted small">Esperadas por el modelo (suma de probabilidades) vs llamar al azar.</p></figcaption>
+          <div class="legend" id="legend-gain"></div>
+          <div class="chart" id="chart-gain"></div>
+        </figure>
+        <figure class="card chart-card">
+          <figcaption><h3>Beneficio esperado según % llamado</h3>
+            <p class="muted small">V × conversiones esperadas − C × llamadas.</p></figcaption>
+          <div class="chart" id="chart-profit"></div>
+        </figure>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 id="table-title">Clientes a llamar</h3>
+          <button type="button" class="btn" id="btn-download">Descargar listado (CSV)</button>
+        </div>
+        <div class="table-wrap"><table class="data" id="rank-table"></table></div>
+        <p class="muted small" id="table-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MODELO ===================== -->
+  <section id="tab-modelo" class="tab-panel" role="tabpanel" hidden>
+    <div class="grid-3">
+      <article class="card info"><h3>Solo información previa a la llamada</h3>
+        <p>La duración de la llamada predice muy bien, pero se conoce <b>después</b> de llamar. Usarla sería hacer trampa:
+           con ella el ROC-AUC sube a <b id="m-dur"></b>, pero ese modelo no se puede usar para decidir. Esta app la rechaza.</p></article>
+      <article class="card info"><h3>Datos limpios y evaluación honesta</h3>
+        <p>Las <b id="m-overlap"></b> filas del archivo de prueba estaban repetidas en el de entrenamiento y se quitaron.
+           El modelo se entrenó con <b id="m-train"></b> clientes y se evaluó una sola vez sobre <b id="m-test"></b> que nunca vio.</p></article>
+      <article class="card info"><h3>Umbral económico</h3>
+        <p>Conviene llamar si la ganancia esperada supera el costo: <b>p × V &gt; C</b>. Con V = 20 y C = 1 el umbral es
+           <b>5 %</b>, y coincide con el óptimo encontrado en los datos: las probabilidades están bien calibradas.</p></article>
+    </div>
+    <div class="card">
+      <h2>Resultados en datos de prueba</h2>
+      <div class="table-wrap"><table class="data" id="metrics-table"></table></div>
+      <p class="muted small">PR-AUC: calidad del ranking (al azar ≈ 0,115). Lift 10 %: cuántas veces más conversiones hay en el 10 % mejor rankeado que en promedio.
+         Brier: error de las probabilidades (menor es mejor).</p>
+    </div>
+    <div class="card links">
+      <a class="btn" href="https://fcaceres-create.github.io/caece-aprendizaje-artificial-tpfinal/presentacion/" target="_blank" rel="noopener">Ver la presentación</a>
+      <a class="btn" href="https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal" target="_blank" rel="noopener">Código en GitHub</a>
+      <a class="btn" id="docs-link" href="docs" target="_blank" rel="noopener">Documentación de la API</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <span>Fernando Caceres · Aprendizaje Artificial · Maestría en Gestión y Desarrollo de Inteligencia Artificial · Universidad CAECE</span>
+  <span>Docentes: Juan Azcurra · Paul Pablo Hernán</span>
+</footer>
+
+<div id="tooltip" class="tooltip" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

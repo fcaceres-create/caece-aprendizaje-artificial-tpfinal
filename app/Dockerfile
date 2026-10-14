@@ -19,4 +19,6 @@ COPY app ./app
 
 ENV MODEL_PATH=/srv/models/model_final.joblib METADATA_PATH=/srv/models/metadata.json
 EXPOSE 8000 8501
-CMD ["uvicorn", "app.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# La plataforma de hosting (Render, Hugging Face, etc.) indica el puerto en $PORT; localmente se usa 8000.
+# La API sirve también el frontend propio (app/web) en "/".
+CMD ["sh", "-c", "uvicorn app.api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

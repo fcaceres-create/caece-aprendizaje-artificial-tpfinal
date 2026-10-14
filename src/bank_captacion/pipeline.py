@@ -62,9 +62,11 @@ def stage_report():
     from .diagram import render_diagrams
     from .export_report import build_report
     from .slides import build_slides_html
+    from .web_assets import build_web_assets
     render_diagrams()
     build_report()
     print("  presentación:", build_slides_html())
+    print("  datos del frontend:", build_web_assets())
 
 
 def main(argv=None):

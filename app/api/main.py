@@ -13,7 +13,9 @@ from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from bank_captacion import config as cfg
 from bank_captacion.inference import (INPUT_COLUMNS, assign_decile, load_model, score_frame,
@@ -40,6 +42,16 @@ app = FastAPI(
                 "por la campaña se convierta. TP Final Aprendizaje Artificial — CAECE.",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+# CORS: permite que un frontend alojado en otro dominio (por ejemplo GitHub Pages) consuma la API.
+# Es una API pública de solo lectura (predicción), por eso el valor por defecto es "*".
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",")],
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+    expose_headers=["X-Ignored-Columns"],
 )
 
 
@@ -131,3 +143,9 @@ async def predict_batch(file: UploadFile = File(..., description="CSV con una fi
     return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv",
                              headers={"Content-Disposition": "attachment; filename=ranking_clientes.csv",
                                       "X-Ignored-Columns": ",".join(ignored)})
+
+
+# Frontend propio (app/web): se monta al final para que las rutas de la API tengan prioridad.
+WEB_DIR = Path(__file__).resolve().parents[1] / "web"
+if WEB_DIR.exists():
+    app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")

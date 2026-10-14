@@ -72,3 +72,15 @@ def test_batch_rejects_bad_csv(client):
     bad = pd.DataFrame({"age": [30], "job": ["x"]}).to_csv(index=False).encode()
     r = client.post("/predict/batch", files={"file": ("bad.csv", bad, "text/csv")})
     assert r.status_code == 422
+
+
+def test_frontend_is_served(client):
+    r = client.get("/")
+    assert r.status_code == 200 and "Captación de clientes" in r.text
+    assert client.get("/app.js").status_code == 200
+    assert client.get("/data/summary.json").json()["model_label"] == "LightGBM"
+
+
+def test_cors_header(client, sample_client):
+    r = client.post("/predict", json=sample_client, headers={"Origin": "https://example.org"})
+    assert r.headers.get("access-control-allow-origin") in ("*", "https://example.org")

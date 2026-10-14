@@ -1,0 +1,61 @@
+{
+  "model_label": "LightGBM",
+  "threshold": 0.05,
+  "business_params": {
+    "cost_per_contact": 1.0,
+    "value_per_conversion": 20.0
+  },
+  "train_rows": 40690,
+  "test_rows": 4521,
+  "overlap_removed": 4521,
+  "test": {
+    "final": {
+      "label": "LightGBM (final, pre-contacto)",
+      "roc_auc": 0.784,
+      "pr_auc": 0.435,
+      "lift10": 4.21,
+      "gain20": 0.597,
+      "brier": 0.082
+    },
+    "logreg": {
+      "label": "Regresión logística (baseline)",
+      "roc_auc": 0.738,
+      "pr_auc": 0.349,
+      "lift10": 3.81,
+      "gain20": 0.491,
+      "brier": 0.183
+    },
+    "dummy": {
+      "label": "Dummy (prior)",
+      "roc_auc": 0.5,
+      "pr_auc": 0.115,
+      "lift10": 1.09,
+      "gain20": 0.198,
+      "brier": 0.102
+    },
+    "with_duration": {
+      "label": "LightGBM + duration (leakage)",
+      "roc_auc": 0.933,
+      "pr_auc": 0.607,
+      "lift10": 5.48,
+      "gain20": 0.833,
+      "brier": 0.062
+    }
+  },
+  "gain_by_decile": [
+    42.2,
+    59.7,
+    67.8,
+    74.5,
+    80.8,
+    85.8,
+    91.7,
+    94.6,
+    98.3,
+    100.0
+  ],
+  "cv": {
+    "roc_auc": 0.806,
+    "pr_auc": 0.466
+  }
+}
