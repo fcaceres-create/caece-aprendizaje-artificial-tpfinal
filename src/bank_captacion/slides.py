@@ -23,6 +23,7 @@ from .export_report import collect_numbers, f, i, pct
 OUT_DIR = cfg.ROOT / "presentacion"
 OUT_FILE = OUT_DIR / "index.html"
 REPO_URL = "https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal"
+APP_URL = "https://captacion-clientes.onrender.com"
 
 AUTHOR = "Fernando Caceres"
 TEACHERS = "Juan Azcurra · Paul Pablo Hernán"
@@ -603,7 +604,8 @@ def build_slides() -> list[dict]:
           <ul class="tight">
             <li>Validación pydantic: categorías, rangos, consistencia pdays/previous, <b>rechazo de duration</b>.</li>
             <li>Interfaz Streamlit: cliente individual y campaña (slider de % o presupuesto, descarga del listado).</li>
-            <li>Dockerfile + docker-compose · 29 tests automáticos (features, leakage, modelo, API).</li>
+            <li>Frontend web propio servido por la API · Docker · 31 tests automáticos.</li>
+            <li>Publicada en <a href="{APP_URL}">{APP_URL.replace('https://', '')}</a>.</li>
           </ul>
         </div>
         <div>
@@ -656,6 +658,7 @@ def build_slides() -> list[dict]:
         <p class="sub">Preguntas</p>
         <div class="meta">
           <div><span>Repositorio</span><a href="{REPO_URL}">{REPO_URL.replace('https://', '')}</a></div>
+          <div><span>App web</span><a href="{APP_URL}">{APP_URL.replace('https://', '')}</a></div>
           <div><span>Reproducir</span><code>python -m bank_captacion.pipeline</code></div>
           <div><span>Autor</span>{AUTHOR}</div>
         </div>

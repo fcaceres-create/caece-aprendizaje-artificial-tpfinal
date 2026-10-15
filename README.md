@@ -24,6 +24,7 @@ El trabajo sigue CRISP-DM de punta a punta y agrega una API (FastAPI) y una inte
 | Baseline: regresión logística (PR-AUC) | 0,412 | 0,349 |
 | Leakage: el mismo modelo con `duration` (ROC-AUC) | 0,937 | 0,933 (no utilizable) |
 
+- **App web publicada:** https://captacion-clientes.onrender.com (frontend + API; documentación en `/docs`). En el plan gratuito, la primera visita tras un rato sin uso tarda alrededor de un minuto.
 - **Presentación:** [presentacion/index.html](presentacion/index.html). Es un único archivo HTML, funciona sin
   conexión y se navega con ← →; con `N` se ven las notas del orador y con `F` se pasa a pantalla completa.
 

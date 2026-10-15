@@ -1,5 +1,7 @@
 # Despliegue: frontend + API en la web
 
+**Publicado en:** https://captacion-clientes.onrender.com · API: `/docs` · Servicio de Render `captacion-clientes` (Blueprint, cuenta de GitHub `fcaceres-create`, auto-deploy desde `main`).
+
 ## Arquitectura
 
 ```
