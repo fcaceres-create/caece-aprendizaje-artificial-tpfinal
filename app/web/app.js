@@ -13,12 +13,12 @@
       ["self-employed", "Independiente"], ["services", "Servicios"], ["student", "Estudiante"],
       ["technician", "Técnico"], ["unemployed", "Desempleado"], ["unknown", "Desconocido"]],
     marital: [["married", "Casado/a"], ["single", "Soltero/a"], ["divorced", "Divorciado/a o viudo/a"]],
-    education: [["primary", "Primaria"], ["secondary", "Secundaria"], ["tertiary", "Terciaria / universitaria"], ["unknown", "Desconocida"]],
+    education: [["primary", "Primaria"], ["secondary", "Secundaria"], ["tertiary", "Universitaria"], ["unknown", "Desconocida"]],
     yesno: [["no", "No"], ["yes", "Sí"]],
     contact: [["cellular", "Celular"], ["telephone", "Teléfono fijo"], ["unknown", "Desconocido"]],
     month: [["jan", "Enero"], ["feb", "Febrero"], ["mar", "Marzo"], ["apr", "Abril"], ["may", "Mayo"], ["jun", "Junio"],
       ["jul", "Julio"], ["aug", "Agosto"], ["sep", "Septiembre"], ["oct", "Octubre"], ["nov", "Noviembre"], ["dec", "Diciembre"]],
-    poutcome: [["unknown", "Sin campaña previa"], ["failure", "Fracaso"], ["other", "Otro"], ["success", "Éxito"]],
+    poutcome: [["unknown", "Ninguna"], ["failure", "Fracaso"], ["other", "Otro"], ["success", "Éxito"]],
   };
   const LABEL = Object.fromEntries(Object.entries(LEVELS).map(([k, v]) => [k, Object.fromEntries(v)]));
   const VALUE_ES = { ...LABEL.job, ...LABEL.education, ...LABEL.contact, ...LABEL.month, ...LABEL.poutcome,
