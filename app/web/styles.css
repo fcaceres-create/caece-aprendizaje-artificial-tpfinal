@@ -248,3 +248,13 @@ table.data tr.hl td { background: var(--brand-soft); font-weight: 600; }
 [hidden] { display: none !important; }
 .meter { position: relative; padding-top: 20px; }
 .thr-label { position: absolute; top: 0; transform: translateX(-50%); font-size: 11.5px; color: var(--ink-2); font-weight: 600; white-space: nowrap; }
+.result-error { display: flex; gap: 12px; align-items: flex-start; background: #fdf0eb; border: 1px solid #f3c9b8; color: #8a2c0d;
+  border-radius: 12px; padding: 16px; margin: 40px 0; }
+:root[data-theme="dark"] .result-error { background: #3a1d14; border-color: #6b3020; color: #f5b8a3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .result-error { background: #3a1d14; border-color: #6b3020; color: #f5b8a3; } }
+.result-error svg { width: 26px; height: 26px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.result-error b { font-size: 16px; display: block; margin-bottom: 4px; }
+.result-error p { margin: 0; font-size: 14px; line-height: 1.45; }
+.field.bad input, .field.bad select { border-color: var(--neg); outline: 2px solid var(--neg); outline-offset: 0; }
+.result.loading #result-body { opacity: .45; transition: opacity .2s; }
+.colab-links .btn { font-size: 14px; }

@@ -31,6 +31,16 @@
       housing: "no", loan: "no", contact: "cellular", day: 15, month: "oct", campaign: 1, pdays: -1, previous: 0, poutcome: "unknown" },
     masiva: { age: 45, job: "blue-collar", marital: "married", education: "secondary", default: "no", balance: 300,
       housing: "yes", loan: "yes", contact: "unknown", day: 20, month: "may", campaign: 4, pdays: -1, previous: 0, poutcome: "unknown" },
+    estudiante: { age: 22, job: "student", marital: "single", education: "secondary", default: "no", balance: 800,
+      housing: "no", loan: "no", contact: "cellular", day: 12, month: "apr", campaign: 1, pdays: -1, previous: 0, poutcome: "unknown" },
+    jubilado_nuevo: { age: 70, job: "retired", marital: "divorced", education: "primary", default: "no", balance: 5200,
+      housing: "no", loan: "no", contact: "telephone", day: 5, month: "aug", campaign: 2, pdays: -1, previous: 0, poutcome: "unknown" },
+    fracaso: { age: 41, job: "technician", marital: "married", education: "secondary", default: "no", balance: 2500,
+      housing: "yes", loan: "no", contact: "cellular", day: 18, month: "nov", campaign: 2, pdays: 180, previous: 3, poutcome: "failure" },
+    deuda: { age: 38, job: "services", marital: "married", education: "secondary", default: "no", balance: -450,
+      housing: "yes", loan: "yes", contact: "cellular", day: 28, month: "jul", campaign: 6, pdays: -1, previous: 0, poutcome: "unknown" },
+    emprendedor: { age: 50, job: "entrepreneur", marital: "married", education: "tertiary", default: "no", balance: 12000,
+      housing: "yes", loan: "no", contact: "unknown", day: 9, month: "jun", campaign: 3, pdays: -1, previous: 0, poutcome: "unknown" },
   };
 
   // ---------- Formato ----------
@@ -152,17 +162,26 @@
     ev.preventDefault();
     const f = ev.target, err = $("#form-error"), btn = $("button[type=submit]", f);
     err.textContent = "";
+    $$(".field.bad", f).forEach((x) => x.classList.remove("bad"));
     if (!f.reportValidity()) return;
     const payload = {};
     ["age", "balance", "day", "campaign", "pdays", "previous"].forEach((k) => { payload[k] = parseInt(f.elements[k].value, 10); });
     ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"].forEach((k) => { payload[k] = f.elements[k].value; });
+    // Chequeo de consistencia antes de llamar a la API (mismo control que hace la API).
+    if (payload.pdays === -1 && payload.previous > 0) {
+      ["pdays", "previous"].forEach((k) => f.elements[k].closest(".field").classList.add("bad"));
+      showError(`Datos inconsistentes: se indicaron ${payload.previous} contactos previos, pero "Días desde el último contacto" = -1 ` +
+        `significa que el cliente nunca fue contactado. Ingrese los días (por ejemplo 90) o ponga 0 contactos previos.`);
+      return;
+    }
     btn.disabled = true;
+    $("#result").classList.add("loading");
     try {
       const res = await (await api("/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })).json();
       state.lastPrediction = res;
       renderPrediction(res);
-    } catch (e) { err.textContent = e.message; }
-    finally { btn.disabled = false; }
+    } catch (e) { showError(e.message); }
+    finally { btn.disabled = false; $("#result").classList.remove("loading"); }
   });
 
   function describeFactor(f) {
@@ -185,8 +204,18 @@
     return VALUE_ES[v] || String(v);
   }
 
+  // Muestra el error en el panel de resultado (y no deja visible un resultado viejo).
+  function showError(msg) {
+    state.lastPrediction = null;
+    $("#result-body").hidden = true; $("#result-empty").hidden = true;
+    const box = $("#result-error"); box.hidden = false;
+    $("#result-error-msg").textContent = msg;
+    $("#form-error").textContent = "Revisar los datos (ver el mensaje a la derecha).";
+  }
+
   function renderPrediction(res) {
-    $("#result-empty").hidden = true; $("#result-body").hidden = false;
+    $("#result-empty").hidden = true; $("#result-error").hidden = true; $("#result-body").hidden = false;
+    $("#form-error").textContent = "";
     const p = res.probability, thr = state.C / state.V, call = p >= thr;
     $("#r-prob").textContent = pct(p, 1);
     const dec = $("#r-decision");

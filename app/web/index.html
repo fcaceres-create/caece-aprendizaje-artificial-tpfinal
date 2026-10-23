@@ -62,7 +62,12 @@
             <span class="muted">Ejemplos:</span>
             <button type="button" class="chip" data-preset="exito">Jubilado con éxito previo</button>
             <button type="button" class="chip" data-preset="profesional">Profesional, octubre</button>
+            <button type="button" class="chip" data-preset="estudiante">Estudiante, abril</button>
+            <button type="button" class="chip" data-preset="jubilado_nuevo">Jubilado sin historial</button>
             <button type="button" class="chip" data-preset="masiva">Campaña masiva de mayo</button>
+            <button type="button" class="chip" data-preset="fracaso">Recontactado sin éxito</button>
+            <button type="button" class="chip" data-preset="deuda">Saldo negativo y préstamos</button>
+            <button type="button" class="chip" data-preset="emprendedor">Emprendedor, junio</button>
           </div>
         </div>
 
@@ -108,6 +113,10 @@
         <div class="empty" id="result-empty">
           <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M15 28l6-7 5 4 7-9"/></svg>
           <p>Complete los datos o elija un ejemplo y presione <b>Estimar probabilidad</b>.</p>
+        </div>
+        <div class="result-error" id="result-error" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v6M12 17h.01"/></svg>
+          <div><b>No se pudo estimar</b><p id="result-error-msg"></p></div>
         </div>
         <div id="result-body" hidden>
           <div class="hero">
@@ -212,10 +221,23 @@
       <p class="muted small">PR-AUC: calidad del ranking (al azar ≈ 0,115). Lift 10 %: cuántas veces más conversiones hay en el 10 % mejor rankeado que en promedio.
          Brier: error de las probabilidades (menor es mejor).</p>
     </div>
-    <div class="card links">
-      <a class="btn" href="https://fcaceres-create.github.io/caece-aprendizaje-artificial-tpfinal/presentacion/" target="_blank" rel="noopener">Ver la presentación</a>
-      <a class="btn" href="https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal" target="_blank" rel="noopener">Código en GitHub</a>
-      <a class="btn" id="docs-link" href="docs" target="_blank" rel="noopener">Documentación de la API</a>
+    <div class="card">
+      <h2>Material del trabajo</h2>
+      <div class="links">
+        <a class="btn" href="https://fcaceres-create.github.io/caece-aprendizaje-artificial-tpfinal/presentacion/" target="_blank" rel="noopener">Ver la presentación</a>
+        <a class="btn" href="https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal" target="_blank" rel="noopener">Código en GitHub</a>
+        <a class="btn" href="https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/reports/informe_final.pdf" target="_blank" rel="noopener">Informe final (PDF)</a>
+        <a class="btn" id="docs-link" href="docs" target="_blank" rel="noopener">Documentación de la API</a>
+      </div>
+      <h3 style="margin-top:16px">Notebooks en Google Colab</h3>
+      <div class="links colab-links">
+        <a class="btn primary" href="https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/TP_final_colab.ipynb" target="_blank" rel="noopener">▶ Reproducir todo el trabajo</a>
+        <a class="btn" href="https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/01_eda.ipynb" target="_blank" rel="noopener">1 · Exploración de datos</a>
+        <a class="btn" href="https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/02_modelado.ipynb" target="_blank" rel="noopener">2 · Modelado</a>
+        <a class="btn" href="https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/03_evaluacion_y_negocio.ipynb" target="_blank" rel="noopener">3 · Evaluación y negocio</a>
+      </div>
+      <p class="muted small">El primero ejecuta el trabajo de punta a punta (descarga los datos, prepara, evalúa y explica). Los otros
+         tres muestran el análisis detallado con sus resultados ya cargados.</p>
     </div>
   </section>
 </main>

@@ -1,0 +1,129 @@
+TRABAJO PRÁCTICO FINAL — PREDICCIÓN DE CAPTACIÓN DE CLIENTES
+Aprendizaje Artificial · Maestría en Gestión y Desarrollo de Inteligencia Artificial · Universidad CAECE
+Autor: Fernando Caceres · Docentes: Juan Azcurra · Paul Pablo Hernán
+=====================================================================================================
+
+
+1. PRESENTACIÓN
+-----------------------------------------------------------------------------------------------------
+https://fcaceres-create.github.io/caece-aprendizaje-artificial-tpfinal/presentacion/
+
+Diapositivas de la defensa (28 slides). Recorren el trabajo de punta a punta siguiendo CRISP-DM:
+problema de negocio, datos y hallazgo crítico, exploración, modelado, evaluación, explicabilidad y
+despliegue.
+
+Se abre en cualquier navegador. Controles:
+  - Flechas ← →: avanzar y retroceder.
+  - N: mostrar las notas del orador.
+  - F: pantalla completa.
+
+
+2. APLICACIÓN WEB (DEMO DEL MODELO)
+-----------------------------------------------------------------------------------------------------
+https://captacion-clientes.onrender.com
+https://captacion-clientes.onrender.com/?demo   (carga ejemplos automáticamente)
+
+Aplicación publicada que usa el modelo entrenado. Tiene tres pestañas:
+  - Cliente: se cargan los datos de un cliente y se obtiene la probabilidad de conversión, la
+    recomendación (llamar / no llamar) y las variables que más influyeron.
+  - Campaña: se sube un listado (o se usa una muestra de 400 clientes reales) y se obtiene el ranking
+    de a quién llamar, las conversiones y el beneficio esperados, y gráficos interactivos.
+  - El modelo: métricas en datos de prueba y resumen del trabajo.
+
+Nota: está alojada en un plan gratuito. Si nadie la usó en los últimos 15 minutos, la primera visita
+tarda alrededor de un minuto en cargar.
+
+
+3. DOCUMENTACIÓN DE LA API
+-----------------------------------------------------------------------------------------------------
+https://captacion-clientes.onrender.com/docs
+
+Documentación interactiva de la API REST (FastAPI) que consume la aplicación. Permite probar cada
+endpoint desde el navegador:
+  - /predict: un cliente.
+  - /predict/batch: un archivo CSV.
+  - /model/info: datos del modelo.
+  - /health: estado del servicio.
+
+
+4. NOTEBOOK EN GOOGLE COLAB (REPRODUCE TODO EL TRABAJO)
+-----------------------------------------------------------------------------------------------------
+https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/TP_final_colab.ipynb
+
+Notebook autocontenido que reproduce el trabajo completo:
+  - Descarga el dataset desde UCI y verifica que sea idéntico a los archivos de la consigna.
+  - Ejecuta la preparación de datos, la exploración, la evaluación y la explicabilidad.
+  - Prueba el modelo local y la API publicada.
+
+Cómo ejecutarlo: "Entorno de ejecución → Ejecutar todo". La primera celda instala las librerías y
+reinicia el entorno; luego se repite "Ejecutar todo".
+  - Por defecto usa el modelo ya entrenado (pocos minutos).
+  - Con MODO = "completo" reentrena desde cero (20 a 40 minutos).
+
+
+5. NOTEBOOKS DE ANÁLISIS (CON RESULTADOS YA CARGADOS)
+-----------------------------------------------------------------------------------------------------
+Exploración de datos (EDA):
+https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/01_eda.ipynb
+
+Modelado (comparación de 10 algoritmos, desbalance, ajuste de hiperparámetros, selección y umbral):
+https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/02_modelado.ipynb
+
+Evaluación y negocio (resultados en test, beneficio, leakage, SHAP, errores y segmentos):
+https://colab.research.google.com/github/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/notebooks/03_evaluacion_y_negocio.ipynb
+
+Muestran el análisis detallado con sus gráficos y comentarios. Están pensados para leerse; para ejecutar
+el trabajo se recomienda el notebook del punto 4.
+
+
+6. REPOSITORIO DE CÓDIGO (GITHUB)
+-----------------------------------------------------------------------------------------------------
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal
+
+Contiene todo el proyecto: código fuente, modelo entrenado, notebooks, informe, documentación, tests,
+aplicación y configuración de Docker. El archivo README explica cómo reproducir el trabajo con un solo
+comando.
+
+
+7. INFORME FINAL
+-----------------------------------------------------------------------------------------------------
+PDF:      https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/reports/informe_final.pdf
+Markdown: https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/reports/informe_final.md
+
+Informe académico completo:
+  - Resumen ejecutivo.
+  - Las seis fases de CRISP-DM con la justificación de cada decisión.
+  - Conclusiones y trabajo futuro.
+  - Anexos: registro de decisiones, diagramas e instrucciones de reproducción.
+
+También está disponible en Word (reports/informe_final.docx).
+
+
+8. DOCUMENTACIÓN COMPLEMENTARIA
+-----------------------------------------------------------------------------------------------------
+Registro de decisiones (19 decisiones con alternativas, justificación y evidencia):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/decision_log.md
+
+Preparación de los datos, paso a paso (cada operación sobre el dataset, con preguntas y respuestas):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/03_preparacion_datos.md
+
+Comprensión del negocio (problema, métricas y marco económico):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/01_negocio.md
+
+Comprensión de los datos (verificaciones y hallazgos del análisis exploratorio):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/02_datos.md
+
+Diagramas del pipeline (flujo completo del proyecto y del modelo final):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/diagrama_pipeline.md
+
+Guía de despliegue (arquitectura de la aplicación y publicación en la web):
+https://github.com/fcaceres-create/caece-aprendizaje-artificial-tpfinal/blob/main/docs/despliegue.md
+
+
+=====================================================================================================
+RESULTADOS PRINCIPALES (datos de prueba, 4.521 clientes nunca vistos por el modelo)
+  - Modelo final: LightGBM, entrenado solo con información disponible antes de la llamada.
+  - ROC-AUC 0,784 y PR-AUC 0,435 (al azar: 0,115).
+  - Llamando al 20 % de clientes mejor rankeado se captura el 60 % de las conversiones.
+  - En el 10 % superior hay 4,2 veces más conversiones que llamando al azar.
+=====================================================================================================

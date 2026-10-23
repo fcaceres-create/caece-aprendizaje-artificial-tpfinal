@@ -143,6 +143,33 @@ def conversion_by_category(df: pd.DataFrame) -> pd.DataFrame:
     fig.suptitle("Tasa de conversión por categoría (rojo = 'unknown')", fontsize=15)
     fig.tight_layout()
     _save(fig, "conversion_by_category")
+
+    # Un panel por variable (para mostrarlos por separado y ampliarlos en la presentación).
+    for col in cfg.CATEGORICAL_RAW:
+        sub = out[out.variable == col].copy()
+        if col == "month":
+            sub["category"] = pd.Categorical(sub["category"], MONTH_ORDER, ordered=True)
+            sub = sub.sort_values("category")
+        else:
+            sub = sub.sort_values("conversion_rate", ascending=False)
+        fig, ax = plt.subplots(figsize=(6.4, 4.2))
+        colors = ["#d9534f" if c == "unknown" else "#337ab7" for c in sub["category"].astype(str)]
+        ax.bar(sub["category"].astype(str), 100 * sub["conversion_rate"], color=colors)
+        ax.axhline(100 * base, ls="--", color="k", lw=1, label=f"Tasa base {100 * base:.1f} %".replace(".", ","))
+        many = len(sub) > 8
+        for k, (r, cnt) in enumerate(zip(sub["conversion_rate"], sub["n"])):
+            pct_txt = f"{100 * r:.1f}".replace(".", ",")
+            txt = pct_txt if many else f"{pct_txt} %\n(n={cnt:,})".replace(",", ".")
+            if not many:
+                txt = txt.replace(".", ",", 1)  # decimal con coma, miles con punto
+            ax.text(k, 100 * r, txt, ha="center", va="bottom", fontsize=7 if many else 7.5)
+        ax.set_ylim(0, 100 * sub["conversion_rate"].max() * 1.22)
+        ax.set_title(f"{VAR_LABELS[col]} — tasa de conversión por categoría")
+        ax.set_ylabel("Tasa de conversión (%)")
+        ax.tick_params(axis="x", rotation=40 if len(sub) > 4 else 0)
+        ax.legend(fontsize=8, loc="upper right")
+        fig.tight_layout()
+        _save(fig, f"conv_{col}")
     return out
 
 
