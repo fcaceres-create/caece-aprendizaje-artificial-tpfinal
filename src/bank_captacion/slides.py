@@ -573,18 +573,20 @@ def build_slides() -> list[dict]:
         <div class="small">{table(cvt, highlight_first=True)}
           <p class="small-text">Pasar el mouse por el <b>?</b> de cada modelo para ver cómo funciona y el detalle de por qué se incluyó.</p></div>
         <div>
-          <div class="def"><b>¿Qué muestra?</b>
-            <p>Los 10 modelos se entrenaron y evaluaron <b>exactamente igual</b> (las mismas 5 particiones de los
-               {n['train_clean']} clientes). Ordenados por PR-AUC: más alto = encuentra mejor a los que convierten.</p></div>
-          <div class="def"><b>¿Qué es el “±”?</b>
-            <p>Cuánto varía el resultado entre las 5 pruebas. Si dos modelos difieren menos que eso, es casi un empate.</p></div>
+          <div class="def tools"><b>¿Con qué se entrenó?</b>
+            <p>Un programa propio en <b>Python</b> con la librería <b>scikit-learn</b> (más LightGBM, XGBoost,
+               imbalanced-learn y Optuna). Un solo comando entrena y evalúa todo; el mismo código corre en
+               <b>Google Colab</b>.</p>
+            <div class="chips"><span>Python</span><span>scikit-learn</span><span>LightGBM</span><span>XGBoost</span>
+              <span>pandas</span><span>Colab</span></div></div>
+          <div class="def"><b>¿Cómo se probó?</b>
+            <p>Validación cruzada: aprende con el 80 % de los {n['train_clean']} clientes, se evalúa con el 20 % que no
+               vio y se rota 5 veces. <b>Mismas particiones para los 10.</b> El “±” es cuánto varía entre las 5 pruebas.</p></div>
           <ul class="tight">
-            <li><b>Ganan los modelos de árboles combinados</b> (LightGBM, XGBoost, Random Forest): casi
-                <b>4 veces</b> mejor que el azar ({f(cv[cv.model == 'dummy'].pr_auc_mean.iloc[0])}).</li>
-            <li><b>LightGBM queda primero, pero por poco</b> ({f(_top.pr_auc_mean)} vs {f(_second.pr_auc_mean)}): la
-                elección final se confirma después (desbalance, ajuste y matriz de decisión).</li>
-            <li>La <b>regresión logística</b>, el modelo simple, queda en {f(_lr.pr_auc_mean)}: los modelos más
-                complejos sí aportan.</li>
+            <li><b>Ganan los árboles combinados</b>: casi <b>4 veces</b> mejor que el azar
+                ({f(cv[cv.model == 'dummy'].pr_auc_mean.iloc[0])}).</li>
+            <li><b>LightGBM primero, pero por poco</b> ({f(_top.pr_auc_mean)} vs {f(_second.pr_auc_mean)}): se confirma
+                después con la matriz de decisión.</li>
           </ul>
         </div>
       </div>""",
@@ -998,6 +1000,9 @@ tr.hl td{background:var(--hl);font-weight:600}
 .vs{font-size:28px;color:var(--muted);font-weight:700}
 pre{background:#0f1b2d;color:#d6e2f0;padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.4;margin:4px 0;overflow:hidden}
 .big-list li{font-size:19px;margin:10px 0}
+.def.tools{background:var(--hl);border-color:#bfe3e3}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chips span{font-family:Consolas,Menlo,monospace;font-size:12px;background:#fff;border:1px solid #bfe3e3;border-radius:6px;padding:1px 7px;color:var(--ink)}
 .why-in{font-size:11.5px;color:var(--accent);font-style:italic;line-height:1.1}
 table.why{font-size:14.5px}table.why td{padding:6px 10px;vertical-align:middle}table.why td.num{font-weight:700;white-space:nowrap}
 table.why td:first-child{white-space:nowrap;border-left:5px solid transparent}

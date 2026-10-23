@@ -11,3 +11,8 @@ data/processed/
 Thumbs.db
 ~$*.docx
 *.egg-info/
+
+# Guion del orador: privado (no se publica en el repo)
+presentacion/guion.html
+presentacion/miniaturas/
+src/bank_captacion/guion.py
