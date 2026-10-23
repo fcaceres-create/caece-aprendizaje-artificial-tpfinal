@@ -50,6 +50,57 @@ def stat(value: str, label: str, tone: str = "") -> str:
     return f'<div class="stat {tone}"><div class="v">{value}</div><div class="l">{label}</div></div>'
 
 
+def crisp_svg() -> str:
+    """Diagrama del ciclo CRISP-DM (SVG en línea): flujo principal en el anillo y vueltas atrás punteadas."""
+    import math
+    cx, cy, r = 240, 222, 160
+    names = ["Negocio", "Datos", "Preparación", "Modelado", "Evaluación", "Despliegue"]
+    ang = [-90 + 60 * k for k in range(6)]
+    pos = [(cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))) for a in ang]
+    pt = lambda a, rr=r: (cx + rr * math.cos(math.radians(a)), cy + rr * math.sin(math.radians(a)))
+    parts = [f'<svg class="crisp-svg" viewBox="0 0 480 444" role="img" aria-label="Ciclo CRISP-DM">',
+             '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
+             '<path d="M0,0 L10,5 L0,10 z" fill="#0f7c83"/></marker>'
+             '<marker id="ahd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
+             '<path d="M0,0 L10,5 L0,10 z" fill="#e4572e"/></marker></defs>']
+    # Anillo: flujo principal (sentido horario), un arco por cada transición.
+    for k in range(6):
+        a0, a1 = ang[k] + 21, ang[k] + 60 - 21
+        x0, y0 = pt(a0)
+        x1, y1 = pt(a1)
+        parts.append(f'<path d="M{x0:.1f},{y0:.1f} A{r},{r} 0 0 1 {x1:.1f},{y1:.1f}" fill="none" stroke="#0f7c83" '
+                     f'stroke-width="2.5" marker-end="url(#ah)"/>')
+    # Vueltas atrás (iteración): curvas punteadas hacia adentro.
+    def back(i, j, bend):
+        (x0, y0), (x1, y1) = pos[i], pos[j]
+        mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+        qx, qy = mx + (cx - mx) * bend, my + (cy - my) * bend
+        # recortar extremos para no tapar las cajas
+        def trim(xa, ya, xb, yb, d=34):
+            L = math.hypot(xb - xa, yb - ya) or 1
+            return xa + (xb - xa) * d / L, ya + (yb - ya) * d / L
+        sx, sy = trim(x0, y0, qx, qy)
+        ex, ey = trim(x1, y1, qx, qy)
+        return (f'<path d="M{sx:.1f},{sy:.1f} Q{qx:.1f},{qy:.1f} {ex:.1f},{ey:.1f}" fill="none" stroke="#e4572e" '
+                f'stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ahd)"/>')
+    parts += [back(1, 0, 0.55), back(3, 2, 0.55), back(4, 0, 0.35)]
+    # Centro.
+    parts.append(f'<circle cx="{cx}" cy="{cy}" r="46" fill="#e3f3f3" stroke="#0f7c83" stroke-width="1.5"/>'
+                 f'<text x="{cx}" y="{cy + 6}" text-anchor="middle" font-size="17" font-weight="700" fill="#13233f">Datos</text>')
+    # Nodos.
+    for k, ((x, y), name) in enumerate(zip(pos, names)):
+        w = 138
+        parts.append(f'<rect x="{x - w / 2:.1f}" y="{y - 21:.1f}" width="{w}" height="42" rx="21" fill="#13233f"/>'
+                     f'<circle cx="{x - w / 2 + 21:.1f}" cy="{y:.1f}" r="13" fill="#0f7c83"/>'
+                     f'<text x="{x - w / 2 + 21:.1f}" y="{y + 5:.1f}" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">{k + 1}</text>'
+                     f'<text x="{x - w / 2 + 40:.1f}" y="{y + 5:.1f}" font-size="14.5" font-weight="600" fill="#fff">{name}</text>')
+    parts.append('<g font-size="12.5" fill="#5b6b82"><line x1="60" y1="430" x2="88" y2="430" stroke="#0f7c83" stroke-width="2.5"/>'
+                 '<text x="94" y="434">flujo principal</text>'
+                 '<line x1="220" y1="430" x2="248" y2="430" stroke="#e4572e" stroke-width="2" stroke-dasharray="5 4"/>'
+                 '<text x="254" y="434">vuelta atrás (iteración)</text></g></svg>')
+    return "".join(parts)
+
+
 def build_slides() -> list[dict]:
     n = collect_numbers()
     t = lambda name: pd.read_csv(cfg.TABLES_DIR / name)  # noqa: E731
@@ -76,20 +127,27 @@ def build_slides() -> list[dict]:
         "clasificador más, es una herramienta para priorizar llamadas, y la mayor parte del valor estuvo en "
         "tratar bien los datos.", cls="cover-slide")
 
-    # 2. Agenda -----------------------------------------------------------------------------------
-    phases = [("1", "Negocio", "Decisión, métricas y marco económico"),
-              ("2", "Datos", "Verificación, hallazgo crítico y EDA"),
-              ("3", "Preparación", "Variables derivadas dentro del pipeline"),
-              ("4", "Modelado", "10 algoritmos, desbalance, tuning y selección"),
-              ("5", "Evaluación", "Hold-out, negocio, leakage, explicabilidad"),
-              ("6", "Despliegue", "API FastAPI + interfaz Streamlit")]
-    add("Metodología: CRISP-DM de punta a punta",
-        '<div class="phases">' + "".join(
-            f'<div class="phase"><div class="num">{a}</div><div><b>{b}</b><p>{c}</p></div></div>'
-            for a, b, c in phases) + "</div>"
-        + '<p class="foot">Todo se reconstruye con un solo comando: <code>python -m bank_captacion.pipeline</code> '
-          "(datos → modelos → evaluación → informe, ~4 min). Cada número de esta presentación sale de esa ejecución.</p>",
-        "Recorrer las seis fases. Remarcar la reproducibilidad: semilla fija, versiones fijas, un comando.")
+    # 2. Metodología: CRISP-DM con diagrama del ciclo ------------------------------------------------
+    phases = [("1", "Negocio", "Decidir a quién llamar; métricas de ranking y beneficio (V, C)"),
+              ("2", "Datos", "Verificación, hallazgo del solapamiento train/test y EDA"),
+              ("3", "Preparación", "24 variables pre-contacto dentro de un pipeline sin fugas"),
+              ("4", "Modelado", "10 algoritmos, desbalance, tuning, matriz de decisión y umbral"),
+              ("5", "Evaluación", "Única evaluación en test, negocio, leakage, SHAP y errores"),
+              ("6", "Despliegue", "API + app web publicada, Docker y tests")]
+    add("Metodología: CRISP-DM",
+        '<p class="lead crisp-sub"><b>C</b>ross-<b>I</b>ndustry <b>S</b>tandard <b>P</b>rocess for <b>D</b>ata '
+        '<b>M</b>ining: el estándar para organizar proyectos de ciencia de datos. El modelo es solo una de las '
+        'seis fases, y el proceso es <b>iterativo</b>.</p>'
+        f'<div class="cols crisp">{crisp_svg()}<div class="crisp-list">' + "".join(
+            f'<div class="crisp-item"><span class="num">{a}</span><div><b>{b}</b><p>{c}</p></div></div>'
+            for a, b, c in phases) + "</div></div>"
+        + '<p class="foot">Todo se reconstruye con un solo comando (<code>python -m bank_captacion.pipeline</code>, ~4 min): '
+          "cada número de esta presentación sale de esa ejecución.</p>",
+        "CRISP-DM = Cross-Industry Standard Process for Data Mining. Mensaje: el modelo es solo una de seis fases; "
+        "primero entender la decisión de negocio y los datos. Las flechas punteadas son las vueltas atrás: en este "
+        "trabajo, el hallazgo de la fase 2 (test dentro del train) cambió la preparación, y la evaluación (efecto del mes) "
+        "lleva a recomendar volver a los datos con información reciente. Por eso el foco de la presentación está en los "
+        "datos y en justificar cada decisión.")
 
     # 3. Problema ---------------------------------------------------------------------------------
     add("El problema: ¿a quién conviene llamar?", f"""
@@ -734,6 +792,13 @@ tr.hl td{background:var(--hl);font-weight:600}
 .vs{font-size:28px;color:var(--muted);font-weight:700}
 pre{background:#0f1b2d;color:#d6e2f0;padding:14px 16px;border-radius:8px;font-size:14px;line-height:1.4;margin:4px 0;overflow:hidden}
 .big-list li{font-size:19px;margin:10px 0}
+.crisp-sub{font-size:18px;margin:0 0 6px}
+.cols.crisp{grid-template-columns:1fr 1.05fr;gap:24px;align-items:center}
+.crisp-svg{width:100%;max-height:440px}
+.crisp-list{display:flex;flex-direction:column;gap:9px}
+.crisp-item{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.crisp-item .num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto}
+.crisp-item b{font-size:17px}.crisp-item p{margin:1px 0 0;font-size:14.5px;color:var(--muted)}
 table.explain td{font-size:15px;padding:7px 9px}table.explain td:first-child{white-space:nowrap}table.explain td small{color:var(--muted);font-weight:400}
 .formula .v{color:#0f7c83}.formula .c{color:#e4572e}.formula .t{color:#2e8b57}.formula .f{color:#8a5a00}
 .terms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
